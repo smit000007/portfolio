@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Smit Malaviya | Cybersecurity Portfolio</title>
+  <meta name="description" content="Portfolio of a cybersecurity student: projects, skills, certifications, and contact." />
+  <meta name="theme-color" content="#00ff99" />
+  <meta property="og:title" content="Smit Malaviya | Cybersecurity Portfolio" />
+  <meta property="og:description" content="Cybersecurity projects, writeups, and certifications." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="assets/favicon.png" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#home">SMIT<span>_SEC</span></a>
+    <button class="burger" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">☰</button>
+    <nav id="nav" class="nav">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#certs">Certifications</a>
+      <a href="#contact">Contact</a>
+      <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">◐</button>
+    </nav>
+  </header>
+
+  <main id="home">
+    <section class="hero">
+      <h1 id="typing" class="typing" aria-live="polite"></h1>
+      <p class="subtitle">Student · Web & Mobile App Security · Pentesting · Threat Analysis</p>
+      <div class="cta">
+        <a class="btn" href="#projects">View Projects</a>
+        <a class="btn ghost" href="assets/Resume .pdf" download="_blank" rel="noopener">Resume</a>
+      </div>
+      <div class="socials">
+        <a href="https://www.linkedin.com/in/smit-malaviya-164185228" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/smit000007/" id="githubLink" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </section>
+
+    <section id="about" class="section">
+      <h2>About Me</h2>
+      <p>
+        I am a cybersecurity student passionate about ethical hacking, secure coding, and incident response.
+        I practice regularly on labs and CTFs to sharpen my skills in reconnaissance, exploitation, and defense.
+      </p>
+      <ul class="highlights">
+        <li>Focus: Web App Security, Network Security, Mobile App Security</li>
+
+        <li>Languages: Python, Bash, JavaScript, C </li>
+      </ul>
+    </section>
+
+    <section id="skills" class="section">
+      <h2>Skills</h2>
+      <div class="chips">
+        <span class="chip">Recon & Enumeration</span>
+        <span class="chip">OWASP Top 10</span>
+        <span class="chip">SQLi / XSS</span>
+        <span class="chip">Authentication & Sessions</span>
+        <span class="chip">Android/iOS Basics</span>
+        <span class="chip">Nmap · Wireshark</span>
+        <span class="chip">Burp Suite</span>
+        <span class="chip">Python · Bash</span>
+        <span class="chip">Git & GitHub</span>
+      </div>
+    </section>
+    <section id="projects" class="section">
+      <h2>Projects</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>Port Scanning Tool</h3>
+          <p>A lightweight port scanning tool to discover open ports on a target system.</p>
+          <a class="btn small" href="https://github.com/smit000007/port-scanning-tool" target="_blank" rel="noopener">Code</a>
+        </article>
+      </div>
+    </section>
+    
+    </section>
+
+    <section id="certs" class="section">
+      <h2>Certifications</h2>
+      <ul class="cert-list">
+        <li>CEH </li>
+        <li>TryHackMe badges </li>
+        <li>Cryptography and Network Security</li>
+        <li>SQL Injection Attacks: Techniques to exploit and secure against
+          SQL vulnerabilities.</li>
+        <li>Applied Secure Smart City Practices: Strategies to ensure security
+          in smart city infrastructures.</li>
+        <li>Ethical Hacking with Nmap: Network discovery and vulnerability
+          scanning using Nmap.</li>
+        <li>OWASP Top 10 Security Fundamentals: Key principles for
+          mitigating top web application risks.</li>
+        <li>Wireshark for Ethical Hackers: Network traffic analysis and packet
+          inspection techniques.</li>
+        <li>Session Hijacking and Prevention Techniques: Identifying and
+          preventing session takeover attacks.</li>
+        <li>Deep Dive into Network Assessments: Advanced methods for
+          comprehensive network evaluations.</li>
+        <li>Power of Next-Generation Firewalls: Leveraging modern firewalls
+          for enhanced network security.</li>
+        <li>Burp Suite: Web Application Penetration Testing: Web security
+          testing using Burp Suite tools.</li>
+        <li>Open Source Intelligence (OSINT): Gathering actionable
+          intelligence from public sources.</li>
+       
+
+
+      </ul>
+    </section>
+
+    <section id="contact" class="section">
+
+        <div>
+          <p>Email: <a href="mailto:you@example.com">smitmalaviya30@gmail.com</a></p>
+          <p>LinkedIn: <a href="https://www.linkedin.com/in/smit-malaviya-164185228" target="_blank" rel="noopener">/in/smit‑malaviya</a></p>
+          <p>GitHub: <a id="githubLink2" href="https://github.com/smit000007" target="_blank" rel="noopener">https://github.com/smit000007</a></p>
+        </div>
+      </div>
+     
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© <span id="year"></span> Smit Malaviya </p>
+  </footer>
+
+  <script defer src="script.js"></script>
+</body>
+</html>
