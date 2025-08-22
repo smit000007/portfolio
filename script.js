@@ -1,57 +1,783 @@
-// Typing effect + theme toggle + mobile menu + year + GitHub link helper
-const text = "Hi, I'm Smit Malaviya — Cybersecurity Student";
-const typingEl = document.getElementById("typing");
-let idx = 0;
-(function type() {
-  if (idx <= text.length) {
-    typingEl.textContent = text.slice(0, idx);
-    idx++;
-    setTimeout(type, 60);
-  }
-})();
-
-// Year
-document.getElementById("year").textContent = new Date().getFullYear();
-
-// Mobile nav
-const burger = document.querySelector('.burger');
-const nav = document.getElementById('nav');
-burger.addEventListener('click', () => {
-  const open = nav.classList.toggle('open');
-  burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+// DOM Content Loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize all features with performance optimization
+    initGlobalBackground();
+    initCyberpunkBackground();
+    initTypingAnimation();
+    initCounterAnimation();
+    initMobileNavigation();
+    initSmoothScrolling();
+    initScrollAnimations();
+    initFormHandling();
+    initProjectFilters();
+    initTerminalEffects();
+    initPerformanceOptimizations();
 });
 
-// Theme toggle
-const toggleBtn = document.getElementById('themeToggle');
-toggleBtn.addEventListener('click', () => {
-  document.documentElement.classList.toggle('light');
-});
+// Global Background Animation (Optimized)
+function initGlobalBackground() {
+    const canvas = document.createElement('canvas');
+    canvas.id = 'global-bg';
+    canvas.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -3;
+        opacity: 0.1;
+        pointer-events: none;
+    `;
+    document.body.appendChild(canvas);
+    
+    const ctx = canvas.getContext('2d');
+    let animationId;
+    
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    
+    resizeCanvas();
+    window.addEventListener('resize', debounce(resizeCanvas, 250));
+    
+    // Simplified particle system for global background
+    const particles = [];
+    const maxParticles = Math.min(50, Math.floor((canvas.width * canvas.height) / 20000));
+    
+    class GlobalParticle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.vx = (Math.random() - 0.5) * 0.3;
+            this.vy = (Math.random() - 0.5) * 0.3;
+            this.size = Math.random() * 1.5 + 0.5;
+            this.opacity = Math.random() * 0.3 + 0.1;
+        }
+        
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            
+            if (this.x <= 0 || this.x >= canvas.width) this.vx *= -1;
+            if (this.y <= 0 || this.y >= canvas.height) this.vy *= -1;
+        }
+        
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(0, 255, 65, ${this.opacity})`;
+            ctx.fill();
+        }
+    }
+    
+    // Create particles
+    for (let i = 0; i < maxParticles; i++) {
+        particles.push(new GlobalParticle());
+    }
+    
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        particles.forEach(particle => {
+            particle.update();
+            particle.draw();
+        });
+        
+        // Draw connections (optimized)
+        for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+                const distance = Math.sqrt(
+                    Math.pow(particles[i].x - particles[j].x, 2) + 
+                    Math.pow(particles[i].y - particles[j].y, 2)
+                );
+                
+                if (distance < 150) {
+                    const opacity = (150 - distance) / 150 * 0.2;
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.strokeStyle = `rgba(0, 255, 65, ${opacity})`;
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                }
+            }
+        }
+        
+        animationId = requestAnimationFrame(animate);
+    }
+    
+    animate();
+    
+    // Pause animation when tab is not visible
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            cancelAnimationFrame(animationId);
+        } else {
+            animate();
+        }
+    });
+}
 
-// Optional: light theme vars
-const style = document.createElement('style');
-style.textContent = `
-  .light {
-    --bg: #f7fbf9;
-    --panel: #ffffff;
-    --text: #0b0f10;
-    --muted: #576b66;
-    --accent: #0abf53;
-    --accent-2: #0b84ff;
-    --ring: rgba(11,132,255,0.25);
-    background: radial-gradient(1200px 600px at 20% -10%, rgba(11,132,255,0.08), transparent),
-                radial-gradient(1000px 500px at 100% 10%, rgba(10,191,83,0.12), transparent),
-                #f7fbf9;
-  }
+// Cyberpunk Background Animation
+function initCyberpunkBackground() {
+    const canvas = document.getElementById('cyberpunk-bg');
+    const ctx = canvas.getContext('2d');
+    
+    // Set canvas size
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    
+    // Particle system
+    class Particle {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.vx = (Math.random() - 0.5) * 0.5;
+            this.vy = (Math.random() - 0.5) * 0.5;
+            this.size = Math.random() * 2 + 1;
+            this.opacity = Math.random() * 0.5 + 0.2;
+            this.connections = [];
+        }
+        
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            
+            // Bounce off edges
+            if (this.x <= 0 || this.x >= canvas.width) this.vx *= -1;
+            if (this.y <= 0 || this.y >= canvas.height) this.vy *= -1;
+        }
+        
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(0, 255, 65, ${this.opacity})`;
+            ctx.fill();
+        }
+    }
+    
+    // Create particles
+    const particles = [];
+    const particleCount = Math.min(100, Math.floor((canvas.width * canvas.height) / 10000));
+    
+    for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle(
+            Math.random() * canvas.width,
+            Math.random() * canvas.height
+        ));
+    }
+    
+    // Hex grid
+    class HexGrid {
+        constructor() {
+            this.hexSize = 40;
+            this.hexes = [];
+            this.createHexes();
+        }
+        
+        createHexes() {
+            const cols = Math.ceil(canvas.width / (this.hexSize * 1.5));
+            const rows = Math.ceil(canvas.height / (this.hexSize * Math.sqrt(3)));
+            
+            for (let row = 0; row < rows; row++) {
+                for (let col = 0; col < cols; col++) {
+                    const x = col * this.hexSize * 1.5;
+                    const y = row * this.hexSize * Math.sqrt(3) + (col % 2) * this.hexSize * Math.sqrt(3) / 2;
+                    this.hexes.push({ x, y, opacity: Math.random() * 0.1 + 0.05 });
+                }
+            }
+        }
+        
+        draw() {
+            this.hexes.forEach(hex => {
+                ctx.beginPath();
+                for (let i = 0; i < 6; i++) {
+                    const angle = i * Math.PI / 3;
+                    const x = hex.x + this.hexSize * Math.cos(angle);
+                    const y = hex.y + this.hexSize * Math.sin(angle);
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.closePath();
+                ctx.strokeStyle = `rgba(0, 212, 255, ${hex.opacity})`;
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            });
+        }
+    }
+    
+    const hexGrid = new HexGrid();
+    
+    // Floating code snippets
+    class CodeSnippet {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.text = this.getRandomCode();
+            this.opacity = Math.random() * 0.3 + 0.1;
+            this.vx = (Math.random() - 0.5) * 0.3;
+            this.vy = (Math.random() - 0.5) * 0.3;
+        }
+        
+        getRandomCode() {
+            const codes = [
+                '0x1F4A9', '0xDEAD', '0xBEEF', '0xCAFE',
+                'sudo rm -rf /', 'git commit -m "fix"',
+                'SELECT * FROM users', 'npm install',
+                'docker run', 'kubectl apply',
+                'ssh root@', 'ping 8.8.8.8'
+            ];
+            return codes[Math.floor(Math.random() * codes.length)];
+        }
+        
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            
+            if (this.x <= 0 || this.x >= canvas.width) this.vx *= -1;
+            if (this.y <= 0 || this.y >= canvas.height) this.vy *= -1;
+        }
+        
+        draw() {
+            ctx.font = '12px JetBrains Mono';
+            ctx.fillStyle = `rgba(0, 255, 65, ${this.opacity})`;
+            ctx.fillText(this.text, this.x, this.y);
+        }
+    }
+    
+    const codeSnippets = [];
+    for (let i = 0; i < 8; i++) {
+        codeSnippets.push(new CodeSnippet());
+    }
+    
+    // Animation loop
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Draw hex grid
+        hexGrid.draw();
+        
+        // Update and draw particles
+        particles.forEach(particle => {
+            particle.update();
+            particle.draw();
+        });
+        
+        // Draw connections between nearby particles
+        particles.forEach((particle, i) => {
+            particles.slice(i + 1).forEach(otherParticle => {
+                const distance = Math.sqrt(
+                    Math.pow(particle.x - otherParticle.x, 2) + 
+                    Math.pow(particle.y - otherParticle.y, 2)
+                );
+                
+                if (distance < 100) {
+                    const opacity = (100 - distance) / 100 * 0.3;
+                    ctx.beginPath();
+                    ctx.moveTo(particle.x, particle.y);
+                    ctx.lineTo(otherParticle.x, otherParticle.y);
+                    ctx.strokeStyle = `rgba(0, 255, 65, ${opacity})`;
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                }
+            });
+        });
+        
+        // Update and draw code snippets
+        codeSnippets.forEach(snippet => {
+            snippet.update();
+            snippet.draw();
+        });
+        
+        requestAnimationFrame(animate);
+    }
+    
+    animate();
+}
+
+// Typing Animation
+function initTypingAnimation() {
+    const typingElement = document.getElementById('typing-animation');
+    const words = ['Pentesting', 'AI Security', 'Blockchain', 'Threat Analysis', 'Smart Contracts', 'Adversarial ML'];
+    let wordIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let typingSpeed = 100;
+
+    function type() {
+        const currentWord = words[wordIndex];
+        
+        if (isDeleting) {
+            typingElement.textContent = currentWord.substring(0, charIndex - 1);
+            charIndex--;
+            typingSpeed = 50;
+        } else {
+            typingElement.textContent = currentWord.substring(0, charIndex + 1);
+            charIndex++;
+            typingSpeed = 100;
+        }
+
+        if (!isDeleting && charIndex === currentWord.length) {
+            typingSpeed = 2000; // Pause at end
+            isDeleting = true;
+        } else if (isDeleting && charIndex === 0) {
+            isDeleting = false;
+            wordIndex = (wordIndex + 1) % words.length;
+            typingSpeed = 500; // Pause before next word
+        }
+
+        setTimeout(type, typingSpeed);
+    }
+
+    type();
+}
+
+// Counter Animation
+function initCounterAnimation() {
+    const counters = document.querySelectorAll('.stat-number');
+    const speed = 200;
+
+    const animateCounter = (counter) => {
+        const target = parseInt(counter.getAttribute('data-target'));
+        const count = parseInt(counter.innerText);
+        const increment = target / speed;
+
+        if (count < target) {
+            counter.innerText = Math.ceil(count + increment);
+            setTimeout(() => animateCounter(counter), 1);
+        } else {
+            counter.innerText = target;
+        }
+    };
+
+    // Intersection Observer for counter animation
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const counter = entry.target;
+                animateCounter(counter);
+                observer.unobserve(counter);
+            }
+        });
+    }, { threshold: 0.5 });
+
+    counters.forEach(counter => observer.observe(counter));
+}
+
+// Mobile Navigation
+function initMobileNavigation() {
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.nav-menu');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navMenu.classList.toggle('active');
+    });
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+        });
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!hamburger.contains(e.target) && !navMenu.contains(e.target)) {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+        }
+    });
+}
+
+// Smooth Scrolling
+function initSmoothScrolling() {
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('href');
+            const targetSection = document.querySelector(targetId);
+            
+            if (targetSection) {
+                const offsetTop = targetSection.offsetTop - 70; // Account for fixed navbar
+                window.scrollTo({
+                    top: offsetTop,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+}
+
+// Scroll Animations
+function initScrollAnimations() {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('fade-in-up');
+            }
+        });
+    }, observerOptions);
+
+    // Observe all sections and cards
+    const animatedElements = document.querySelectorAll('.skill-card, .project-card, .certification-card, .badge-card, .stat-card, .connect-category');
+    animatedElements.forEach(el => observer.observe(el));
+}
+
+// Performance Optimizations
+function initPerformanceOptimizations() {
+    // Intersection Observer for lazy loading
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src;
+                img.classList.remove('lazy');
+                observer.unobserve(img);
+            }
+        });
+    });
+
+    // Lazy load images
+    document.querySelectorAll('img[data-src]').forEach(img => {
+        imageObserver.observe(img);
+    });
+
+    // Optimize scroll events
+    let ticking = false;
+    function updateScroll() {
+        // Add any scroll-based animations here
+        ticking = false;
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(updateScroll);
+            ticking = true;
+        }
+    }
+
+    window.addEventListener('scroll', requestTick, { passive: true });
+
+    // Preload critical resources
+    const criticalResources = [
+        'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Orbitron:wght@400;700;900&display=swap',
+        'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'
+    ];
+
+    criticalResources.forEach(resource => {
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'style';
+        link.href = resource;
+        document.head.appendChild(link);
+    });
+}
+
+// Form Handling
+function initFormHandling() {
+    const contactForm = document.querySelector('.contact-form');
+    
+    if (contactForm) {
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(contactForm);
+            const name = formData.get('name');
+            const email = formData.get('email');
+            const subject = formData.get('subject');
+            const message = formData.get('message');
+            
+            // Simulate form submission
+            const submitBtn = contactForm.querySelector('.btn-submit');
+            const originalText = submitBtn.textContent;
+            
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                // Simulate success
+                showNotification('Message sent successfully!', 'success');
+                contactForm.reset();
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }, 2000);
+        });
+    }
+}
+
+// Project Filters
+function initProjectFilters() {
+    const filterButtons = document.querySelectorAll('[data-category]');
+    const projectCards = document.querySelectorAll('.project-card');
+    
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const category = button.getAttribute('data-category');
+            
+            // Update active button
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            
+            // Filter projects
+            projectCards.forEach(card => {
+                const cardCategory = card.getAttribute('data-category');
+                if (category === 'all' || cardCategory === category) {
+                    card.style.display = 'block';
+                    card.classList.add('fade-in-up');
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+}
+
+// Terminal Effects
+function initTerminalEffects() {
+    const terminalWindows = document.querySelectorAll('.terminal-window');
+    
+    terminalWindows.forEach(terminal => {
+        const closeBtn = terminal.querySelector('.close');
+        const minimizeBtn = terminal.querySelector('.minimize');
+        const maximizeBtn = terminal.querySelector('.maximize');
+        
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                terminal.style.transform = 'scale(0.8)';
+                terminal.style.opacity = '0';
+                setTimeout(() => {
+                    terminal.style.display = 'none';
+                }, 300);
+            });
+        }
+        
+        if (minimizeBtn) {
+            minimizeBtn.addEventListener('click', () => {
+                terminal.style.transform = 'scale(0.9)';
+                terminal.style.opacity = '0.7';
+            });
+        }
+        
+        if (maximizeBtn) {
+            maximizeBtn.addEventListener('click', () => {
+                terminal.style.transform = 'scale(1)';
+                terminal.style.opacity = '1';
+            });
+        }
+    });
+}
+
+// Notification System
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.textContent = message;
+    
+    // Add styles
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 20px;
+        border-radius: 5px;
+        color: white;
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 600;
+        z-index: 10000;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        ${type === 'success' ? 'background: #00ff41;' : 'background: #ff5f56;'}
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Animate in
+    setTimeout(() => {
+        notification.style.transform = 'translateX(0)';
+    }, 100);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+            notification.remove();
+        }, 300);
+    }, 3000);
+}
+
+// Parallax Effect
+function initParallaxEffect() {
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const parallaxElements = document.querySelectorAll('.matrix-bg');
+        
+        parallaxElements.forEach(element => {
+            const speed = 0.5;
+            element.style.transform = `translateY(${scrolled * speed}px)`;
+        });
+    });
+}
+
+// Glitch Effect
+function initGlitchEffect() {
+    const glitchElements = document.querySelectorAll('.name, .section-title');
+    
+    glitchElements.forEach(element => {
+        element.addEventListener('mouseenter', () => {
+            element.style.textShadow = `
+                2px 0 #ff0000,
+                -2px 0 #00ffff,
+                0 2px #00ff00
+            `;
+            element.style.animation = 'glitch 0.3s ease-in-out';
+        });
+        
+        element.addEventListener('mouseleave', () => {
+            element.style.textShadow = '';
+            element.style.animation = '';
+        });
+    });
+}
+
+// Add glitch animation to CSS
+const glitchCSS = `
+@keyframes glitch {
+    0% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(-2px, -2px); }
+    60% { transform: translate(2px, 2px); }
+    80% { transform: translate(2px, -2px); }
+    100% { transform: translate(0); }
+}
 `;
+
+const style = document.createElement('style');
+style.textContent = glitchCSS;
 document.head.appendChild(style);
 
-// Helper: set GitHub links once user edits username in one place
-const GH_USERNAME = "your-github-username"; // <-- change this
-const ghLink = document.getElementById('githubLink');
-const ghLink2 = document.getElementById('githubLink2');
-if (GH_USERNAME && GH_USERNAME !== "your-github-username") {
-  ghLink.href = `https://github.com/${GH_USERNAME}`;
-  ghLink2.href = `https://github.com/${GH_USERNAME}`;
-  ghLink.textContent = "GitHub";
-  ghLink2.textContent = `${GH_USERNAME}`;
+// Initialize additional effects
+document.addEventListener('DOMContentLoaded', function() {
+    initParallaxEffect();
+    initGlitchEffect();
+});
+
+// Keyboard Shortcuts
+document.addEventListener('keydown', (e) => {
+    // Ctrl/Cmd + K to focus search (if implemented)
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        // Add search functionality here
+    }
+    
+    // Escape to close mobile menu
+    if (e.key === 'Escape') {
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        hamburger.classList.remove('active');
+        navMenu.classList.remove('active');
+    }
+});
+
+// Performance Optimization
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
 }
+
+// Optimize scroll events
+const optimizedScrollHandler = debounce(() => {
+    // Add any scroll-based animations here
+}, 16); // ~60fps
+
+window.addEventListener('scroll', optimizedScrollHandler);
+
+// Easter Egg - Konami Code
+let konamiCode = [];
+const konamiSequence = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]; // ↑↑↓↓←→←→BA
+
+document.addEventListener('keydown', (e) => {
+    konamiCode.push(e.keyCode);
+    
+    if (konamiCode.length > konamiSequence.length) {
+        konamiCode.shift();
+    }
+    
+    if (konamiCode.join(',') === konamiSequence.join(',')) {
+        // Activate matrix rain effect
+        const matrixRain = document.querySelector('.matrix-rain');
+        if (matrixRain) {
+            matrixRain.style.opacity = '0.3';
+            setTimeout(() => {
+                matrixRain.style.opacity = '0.1';
+            }, 3000);
+        }
+        konamiCode = [];
+    }
+});
+
+// Add loading animation
+window.addEventListener('load', () => {
+    document.body.classList.add('loaded');
+});
+
+// Add CSS for loading state
+const loadingCSS = `
+body:not(.loaded) {
+    overflow: hidden;
+}
+
+body:not(.loaded)::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-primary);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+body:not(.loaded)::after {
+    content: 'Loading...';
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--accent-green);
+    font-family: 'Orbitron', monospace;
+    font-size: 1.5rem;
+    z-index: 10000;
+    animation: blink 1s infinite;
+}
+`;
+
+const loadingStyle = document.createElement('style');
+loadingStyle.textContent = loadingCSS;
+document.head.appendChild(loadingStyle);

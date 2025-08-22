@@ -1,136 +1,575 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Smit Malaviya | Cybersecurity Portfolio</title>
-  <meta name="description" content="Portfolio of a cybersecurity student: projects, skills, certifications, and contact." />
-  <meta name="theme-color" content="#00ff99" />
-  <meta property="og:title" content="Smit Malaviya | Cybersecurity Portfolio" />
-  <meta property="og:description" content="Cybersecurity projects, writeups, and certifications." />
-  <meta property="og:type" content="website" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
-  <link rel="icon" href="assets/favicon.png" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smit Malaviya - Security Architect | Cybersecurity • AI • Blockchain</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-  <header class="site-header">
-    <a class="brand" href="#home">SMIT<span>_SEC</span></a>
-    <button class="burger" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">☰</button>
-    <nav id="nav" class="nav">
-      <a href="#about">About</a>
-      <a href="#skills">Skills</a>
-      <a href="#projects">Projects</a>
-      <a href="#certs">Certifications</a>
-      <a href="#contact">Contact</a>
-      <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">◐</button>
-    </nav>
-  </header>
-
-  <main id="home">
-    <section class="hero">
-      <h1 id="typing" class="typing" aria-live="polite"></h1>
-      <p class="subtitle">Student · Web & Mobile App Security · Pentesting · Threat Analysis</p>
-      <div class="cta">
-        <a class="btn" href="#projects">View Projects</a>
-        <a class="btn ghost" href="assets/Resume .pdf" download="_blank" rel="noopener">Resume</a>
-      </div>
-      <div class="socials">
-        <a href="https://www.linkedin.com/in/smit-malaviya-164185228" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://github.com/smit000007/" id="githubLink" target="_blank" rel="noopener">GitHub</a>
-      </div>
-    </section>
-
-    <section id="about" class="section">
-      <h2>About Me</h2>
-      <p>
-        I am a cybersecurity student passionate about ethical hacking, secure coding, and incident response.
-        I practice regularly on labs and CTFs to sharpen my skills in reconnaissance, exploitation, and defense.
-      </p>
-      <ul class="highlights">
-        <li>Focus: Web App Security, Network Security, Mobile App Security</li>
-
-        <li>Languages: Python, Bash, JavaScript, C </li>
-      </ul>
-    </section>
-
-    <section id="skills" class="section">
-      <h2>Skills</h2>
-      <div class="chips">
-        <span class="chip">Recon & Enumeration</span>
-        <span class="chip">OWASP Top 10</span>
-        <span class="chip">SQLi / XSS</span>
-        <span class="chip">Authentication & Sessions</span>
-        <span class="chip">Android/iOS Basics</span>
-        <span class="chip">Nmap · Wireshark</span>
-        <span class="chip">Burp Suite</span>
-        <span class="chip">Python · Bash</span>
-        <span class="chip">Git & GitHub</span>
-      </div>
-    </section>
-    <section id="projects" class="section">
-      <h2>Projects</h2>
-      <div class="grid">
-        <article class="card">
-          <h3>Port Scanning Tool</h3>
-          <p>A lightweight port scanning tool to discover open ports on a target system.</p>
-          <a class="btn small" href="https://github.com/smit000007/port-scanning-tool" target="_blank" rel="noopener">Code</a>
-        </article>
-      </div>
-    </section>
-    
-    </section>
-
-    <section id="certs" class="section">
-      <h2>Certifications</h2>
-      <ul class="cert-list">
-        <li>CEH </li>
-        <li>TryHackMe badges </li>
-        <li>Cryptography and Network Security</li>
-        <li>SQL Injection Attacks: Techniques to exploit and secure against
-          SQL vulnerabilities.</li>
-        <li>Applied Secure Smart City Practices: Strategies to ensure security
-          in smart city infrastructures.</li>
-        <li>Ethical Hacking with Nmap: Network discovery and vulnerability
-          scanning using Nmap.</li>
-        <li>OWASP Top 10 Security Fundamentals: Key principles for
-          mitigating top web application risks.</li>
-        <li>Wireshark for Ethical Hackers: Network traffic analysis and packet
-          inspection techniques.</li>
-        <li>Session Hijacking and Prevention Techniques: Identifying and
-          preventing session takeover attacks.</li>
-        <li>Deep Dive into Network Assessments: Advanced methods for
-          comprehensive network evaluations.</li>
-        <li>Power of Next-Generation Firewalls: Leveraging modern firewalls
-          for enhanced network security.</li>
-        <li>Burp Suite: Web Application Penetration Testing: Web security
-          testing using Burp Suite tools.</li>
-        <li>Open Source Intelligence (OSINT): Gathering actionable
-          intelligence from public sources.</li>
-       
-
-
-      </ul>
-    </section>
-
-    <section id="contact" class="section">
-
-        <div>
-          <p>Email: <a href="mailto:you@example.com">smitmalaviya30@gmail.com</a></p>
-          <p>LinkedIn: <a href="https://www.linkedin.com/in/smit-malaviya-164185228" target="_blank" rel="noopener">/in/smit‑malaviya</a></p>
-          <p>GitHub: <a id="githubLink2" href="https://github.com/smit000007" target="_blank" rel="noopener">https://github.com/smit000007</a></p>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-text">&lt;SM/&gt;</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#certifications" class="nav-link">Certifications</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
         </div>
-      </div>
-     
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <canvas id="cyberpunk-bg" class="cyberpunk-canvas"></canvas>
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="greeting">Hi, I'm</span>
+                    <span class="name">Smit Malaviya</span>
+                </h1>
+                <h2 class="hero-subtitle">Aspiring Security Architect — Cybersecurity • AI • Blockchain</h2>
+                <div class="typing-container">
+                    <span class="typing-text">I specialize in </span>
+                    <span class="typing-animation" id="typing-animation"></span>
+                    <span class="cursor">|</span>
+                </div>
+                <div class="hero-buttons">
+                    <div class="skill-frame cybersecurity-frame">Cybersecurity</div>
+                    <div class="skill-frame ai-frame">AI Security</div>
+                    <div class="skill-frame blockchain-frame">Blockchain Security</div>
+                    <a href="assets/resume/smit-malaviya-resume.pdf" target="_blank" class="btn btn-resume">Resume Preview</a>
+                    <a href="assets/resume/smit-malaviya-resume.pdf" download="Smit_Malaviya_Resume.pdf" class="btn btn-resume">Download Resume</a>
+                </div>
+            </div>
+        </div>
     </section>
-  </main>
 
-  <footer class="site-footer">
-    <p>© <span id="year"></span> Smit Malaviya </p>
-  </footer>
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">About Me</h2>
+            <div class="terminal-window">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <span class="terminal-btn close"></span>
+                        <span class="terminal-btn minimize"></span>
+                        <span class="terminal-btn maximize"></span>
+                    </div>
+                    <div class="terminal-title">smit@security:~$</div>
+                </div>
+                <div class="terminal-content">
+                    <p class="terminal-text">
+                        <span class="prompt">$</span> whoami<br>
+                        <span class="output">Smit Malaviya - Security Architect & Ethical Hacker</span><br><br>
+                        
+                        <span class="prompt">$</span> cat about.txt<br>
+                        <span class="output">
+                            Passionate cybersecurity professional with expertise in threat detection, 
+                            penetration testing, and security architecture. Specializing in AI/ML security, 
+                            blockchain technology, and full-stack development. Committed to building 
+                            secure, scalable systems and advancing the field of cybersecurity.
+                        </span><br><br>
+                        
+                        <span class="prompt">$</span> <span class="cursor-blink">_</span>
+                    </p>
+                </div>
+                <div class="terminal-actions">
+                    <a href="assets/resume/smit-malaviya-resume.pdf" target="_blank" class="btn btn-terminal">Resume Preview</a>
+                    <a href="assets/resume/smit-malaviya-resume.pdf" download="Smit_Malaviya_Resume.pdf" class="btn btn-terminal">Download Resume</a>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <script defer src="script.js"></script>
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" data-target="90">0</div>
+                    <div class="stat-label">+ Labs</div>
+                    <div class="stat-glow"></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="10">0</div>
+                    <div class="stat-label">Writeups</div>
+                    <div class="stat-glow"></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="25">0</div>
+                    <div class="stat-label">Security Tools</div>
+                    <div class="stat-glow"></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="5">0</div>
+                    <div class="stat-label">Years Experience</div>
+                    <div class="stat-glow"></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="14">0</div>
+                    <div class="stat-label">+ Certifications</div>
+                    <div class="stat-glow"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills">
+        <div class="container">
+            <h2 class="section-title">Skills & Highlights</h2>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <div class="skill-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="skill-title">Cybersecurity Expert</h3>
+                    <p class="skill-description">Threat detection, pentesting, security architecture, vulnerability assessment, and incident response.</p>
+                    <div class="skill-tags">
+                        <span class="tag">Threat Detection</span>
+                        <span class="tag">Pentesting</span>
+                        <span class="tag">Security Architecture</span>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3 class="skill-title">AI/ML Security </h3>
+                    <p class="skill-description">GAN attacker/defender POCs, adversarial ML, AI security, and machine learning model protection.</p>
+                    <div class="skill-tags">
+                        <span class="tag">GAN</span>
+                        <span class="tag">Adversarial ML</span>
+                        <span class="tag">AI Security</span>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">
+                        <i class="fas fa-link"></i>
+                    </div>
+                    <h3 class="skill-title">Blockchain Security</h3>
+                    <p class="skill-description">Smart contract audits, DeFi security, blockchain infrastructure, and cryptocurrency security.</p>
+                    <div class="skill-tags">
+                        <span class="tag">Smart Contracts</span>
+                        <span class="tag">DeFi Security</span>
+                        <span class="tag">Audits</span>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3 class="skill-title">Full-Stack Developer</h3>
+                    <p class="skill-description">Web applications Security, scalable architectures, API Security, and cloud infrastructure Security.</p>
+                    <div class="skill-tags">
+                        <span class="tag">Web Apps</span>
+                        <span class="tag">Scalable Architecture</span>
+                        <span class="tag">APIs</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+        <div class="container">
+            <h2 class="section-title">Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card" data-category="cybersecurity">
+                    <div class="project-glow"></div>
+                    <div class="project-icon">
+                        <i class="fas fa-bug"></i>
+                    </div>
+                    <h3 class="project-title">Cybersecurity</h3>
+                    <p class="project-description">90+ labs, bug bounty writeups, pentest tooling, and security research projects.</p>
+                    <div class="project-stats">
+                        <span class="project-stat">90+ Labs</span>
+                        <span class="project-stat">10 Writeups</span>
+                        <span class="project-stat">25 Tools</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link">View Projects</a>
+                        <a href="#" class="project-link">GitHub</a>
+                    </div>
+                </div>
+                <div class="project-card" data-category="ai">
+                    <div class="project-glow"></div>
+                    <div class="project-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="project-title">AI Research</h3>
+                    <p class="project-description">GAN-based attacker/defender research, adversarial ML implementations, and AI security frameworks.</p>
+                    <div class="project-stats">
+                        <span class="project-stat">GAN Research</span>
+                        <span class="project-stat">Adversarial ML</span>
+                        <span class="project-stat">AI Security</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link">View Research</a>
+                        <a href="#" class="project-link">Papers</a>
+                    </div>
+                </div>
+                <div class="project-card" data-category="blockchain">
+                    <div class="project-glow"></div>
+                    <div class="project-icon">
+                        <i class="fas fa-cube"></i>
+                    </div>
+                    <h3 class="project-title">Blockchain Security</h3>
+                    <p class="project-description">Smart contract security audits, DeFi protocol analysis, and blockchain infrastructure security.</p>
+                    <div class="project-stats">
+                        <span class="project-stat">Smart Contracts</span>
+                        <span class="project-stat">DeFi Security</span>
+                        <span class="project-stat">Audits</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link">View Audits</a>
+                        <a href="#" class="project-link">Reports</a>
+                    </div>
+                </div>
+                                 <div class="project-card" data-category="startups">
+                     <div class="project-glow"></div>
+                     <div class="project-icon">
+                         <i class="fas fa-rocket"></i>
+                     </div>
+                     <h3 class="project-title">Startups</h3>
+                     <p class="project-description"> GAN cybersecurity SaaS platforms with scalable architectures with Arificial intelligence.</p>
+                     <div class="project-stats">
+                         <span class="project-stat">Beauty Products</span>
+                         <span class="project-stat">Cybersecurity SaaS</span>
+                         <span class="project-stat">GAN Platform</span>
+                     </div>
+                     <div class="project-links">
+                         <a href="#" class="project-link">View Startups</a>
+                         <a href="#" class="project-link">Demo</a>
+                     </div>
+                 </div>
+                 <div class="project-card" data-category="cybersecurity">
+                     <div class="project-glow"></div>
+                     <div class="project-icon">
+                         <i class="fas fa-search"></i>
+                     </div>
+                     <h3 class="project-title">Port Scanner Tool</h3>
+                     <p class="project-description">A simple and efficient port scanning tool built with Python for network reconnaissance and security assessment.</p>
+                     <div class="project-stats">
+                         <span class="project-stat">Python</span>
+                         <span class="project-stat">Network Security</span>
+                         <span class="project-stat">Reconnaissance</span>
+                     </div>
+                     <div class="project-links">
+                         <a href="#" class="project-link">View Tool</a>
+                         <a href="#" class="project-link">GitHub</a>
+                     </div>
+                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certifications Section -->
+    <section id="certifications" class="certifications">
+        <div class="container">
+            <h2 class="section-title">Certifications & Achievements</h2>
+            <div class="certifications-grid">
+                <!-- Professional Certifications -->
+                <div class="certification-card">
+                    <div class="certification-icon">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <h3 class="certification-name">CEH (Certified Ethical Hacker)</h3>
+                    <p class="certification-description">Professional certification in ethical hacking and penetration testing</p>
+                </div>
+                <div class="certification-card">
+                    <div class="certification-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="certification-name">Cryptography and Network Security</h3>
+                    <p class="certification-description">Advanced cryptographic techniques and network security protocols</p>
+                </div>
+                <div class="certification-card">
+                    <div class="certification-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3 class="certification-name">SQL Injection Attacks</h3>
+                    <p class="certification-description">Comprehensive understanding of SQL injection vulnerabilities and prevention</p>
+                </div>
+                <div class="certification-card">
+                    <div class="certification-icon">
+                        <i class="fas fa-city"></i>
+                    </div>
+                    <h3 class="certification-name">Applied Secure Smart City Practices</h3>
+                    <p class="certification-description">Security implementation in smart city infrastructure and IoT systems</p>
+                </div>
+                <div class="certification-card">
+                    <div class="certification-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3 class="certification-name">Ethical Hacking with Nmap</h3>
+                    <p class="certification-description">Network discovery and security auditing using Nmap</p>
+                </div>
+                <div class="certification-card">
+                    <div class="certification-icon">
+                        <i class="fas fa-bug"></i>
+                    </div>
+                    <h3 class="certification-name">OWASP Top 10 Security Fundamentals</h3>
+                    <p class="certification-description">Understanding and mitigating the most critical web application security risks</p>
+                </div>
+                <div class="certification-card">
+                    <div class="certification-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3 class="certification-name">Wireshark for Ethical Hackers</h3>
+                    <p class="certification-description">Network traffic analysis and packet inspection techniques</p>
+                </div>
+                <div class="certification-card">
+                    <div class="certification-icon">
+                        <i class="fas fa-user-secret"></i>
+                    </div>
+                    <h3 class="certification-name">Session Hijacking and Prevention</h3>
+                    <p class="certification-description">Session management vulnerabilities and security controls</p>
+                </div>
+                <div class="certification-card">
+                    <div class="certification-icon">
+                        <i class="fas fa-network-wired"></i>
+                    </div>
+                    <h3 class="certification-name">Deep Dive into Network Assessments</h3>
+                    <p class="certification-description">Comprehensive network security assessment methodologies</p>
+                </div>
+                <div class="certification-card">
+                    <div class="certification-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <h3 class="certification-name">Next-Generation Firewalls</h3>
+                    <p class="certification-description">Advanced firewall technologies and security policies</p>
+                </div>
+                <div class="certification-card">
+                    <div class="certification-icon">
+                        <i class="fas fa-spider"></i>
+                    </div>
+                    <h3 class="certification-name">Burp Suite: Web App Penetration Testing</h3>
+                    <p class="certification-description">Web application security testing using Burp Suite</p>
+                </div>
+                <div class="certification-card">
+                    <div class="certification-icon">
+                        <i class="fas fa-search-plus"></i>
+                    </div>
+                    <h3 class="certification-name">Open Source Intelligence (OSINT)</h3>
+                    <p class="certification-description">Information gathering and reconnaissance techniques</p>
+                </div>
+            </div>
+            
+            <!-- TryHackMe Badges -->
+            <h3 class="badges-title">TryHackMe Badges & Achievements</h3>
+            <div class="badges-grid">
+                <div class="badge-card epic">
+                    <div class="badge-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h4 class="badge-name">The Return of the Yeti</h4>
+                    <p class="badge-rarity">Epic: 0.6%</p>
+                </div>
+                <div class="badge-card rare">
+                    <div class="badge-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h4 class="badge-name">Career Ready Badge – Cyber Ready</h4>
+                    <p class="badge-rarity">Rare: 6.6%</p>
+                </div>
+                <div class="badge-card rare">
+                    <div class="badge-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h4 class="badge-name">Security Awareness</h4>
+                    <p class="badge-rarity">Rare: 5.6%</p>
+                </div>
+                <div class="badge-card rare">
+                    <div class="badge-icon">
+                        <i class="fas fa-hashtag"></i>
+                    </div>
+                    <h4 class="badge-name">Hash Cracker</h4>
+                    <p class="badge-rarity">Rare: 6%</p>
+                </div>
+                                 <div class="badge-card rare">
+                     <div class="badge-icon">
+                         <i class="fas fa-cogs"></i>
+                     </div>
+                     <h4 class="badge-name">Introduction to Security Engineering</h4>
+                     <p class="badge-rarity">Rare: 5.7%</p>
+                 </div>
+                <div class="badge-card common">
+                    <div class="badge-icon">
+                        <i class="fas fa-terminal"></i>
+                    </div>
+                    <h4 class="badge-name">Terminaled – cat linux.txt</h4>
+                    <p class="badge-rarity">Common: 34.2%</p>
+                </div>
+                <div class="badge-card common">
+                    <div class="badge-icon">
+                        <i class="fas fa-spider"></i>
+                    </div>
+                    <h4 class="badge-name">Webbed</h4>
+                    <p class="badge-rarity">Common: 25.1%</p>
+                </div>
+                <div class="badge-card common">
+                    <div class="badge-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h4 class="badge-name">World Wide Web Module</h4>
+                    <p class="badge-rarity">Common: 21.8%</p>
+                </div>
+                <div class="badge-card common">
+                    <div class="badge-icon">
+                        <i class="fas fa-bug"></i>
+                    </div>
+                    <h4 class="badge-name">OWASP Top 10</h4>
+                    <p class="badge-rarity">Common: 11.4%</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Connect Section -->
+    <section class="connect">
+        <div class="container">
+            <h2 class="section-title">Connect & Follow</h2>
+            <div class="connect-grid">
+                <div class="connect-category">
+                    <h3 class="connect-title">Professional</h3>
+                    <div class="connect-links">
+                        <a href="https://github.com/smit000007" target="_blank" class="connect-link">
+                            <i class="fab fa-github"></i>
+                            <span>GitHub</span>
+                        </a>
+                        <a href="https://www.linkedin.com/in/smit-malaviya-164185228/" target="_blank" class="connect-link">
+                            <i class="fab fa-linkedin"></i>
+                            <span>LinkedIn</span>
+                        </a>
+                        <a href="https://twitter.com/" target="_blank" class="connect-link">
+                            <i class="fab fa-twitter"></i>
+                            <span>Twitter</span>
+                        </a>
+                        <a href="mailto:smitmalaviya2006@gmail.com" class="connect-link">
+                            <i class="fas fa-envelope"></i>
+                            <span>Email</span>
+                        </a>
+                    </div>
+                </div>
+                                 <div class="connect-category">
+                     <h3 class="connect-title">Bug Bounty</h3>
+                     <div class="connect-links">
+                         <div class="connect-link">
+                             <i class="fas fa-bug"></i>
+                             <span>HackerOne</span>
+                         </div>
+                         <div class="connect-link">
+                             <i class="fas fa-crow"></i>
+                             <span>Bugcrowd</span>
+                         </div>
+                         <div class="connect-link">
+                             <i class="fas fa-shield-alt"></i>
+                             <span>Intigriti</span>
+                         </div>
+                         <div class="connect-link">
+                             <i class="fas fa-lock"></i>
+                             <span>Immunefi</span>
+                         </div>
+                     </div>
+                 </div>
+                <div class="connect-category">
+                    <h3 class="connect-title">Learning</h3>
+                    <div class="connect-links">
+                        <a href="https://app.hackthebox.com/profile/smitmalaviya" target="_blank" class="connect-link">
+                            <i class="fas fa-box"></i>
+                            <span>HackTheBox</span>
+                        </a>
+                        <a href="https://tryhackme.com/p/smitmalaviya11" target="_blank" class="connect-link">
+                            <i class="fas fa-gamepad"></i>
+                            <span>TryHackMe</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Contact</h2>
+            <div class="contact-container">
+                <div class="contact-form-container">
+                    <div class="terminal-window">
+                        <div class="terminal-header">
+                            <div class="terminal-buttons">
+                                <span class="terminal-btn close"></span>
+                                <span class="terminal-btn minimize"></span>
+                                <span class="terminal-btn maximize"></span>
+                            </div>
+                            <div class="terminal-title">contact@smit:~$</div>
+                        </div>
+                        <form class="contact-form">
+                            <div class="form-group">
+                                <label for="name">Name:</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="subject">Subject:</label>
+                                <input type="text" id="subject" name="subject" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Message:</label>
+                                <textarea id="message" name="message" rows="5" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-submit">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="contact-info">
+                    <div class="contact-alternative">
+                        <h3>Email Instead</h3>
+                        <a href="mailto:smitmalaviya2006@gmail.com" class="email-link">smitmalaviya2006@gmail.com</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-text">
+                <span class="scrolling-text">© 2025 Smit Malaviya — Ethical Hacker | Built with HTML, CSS & JS</span>
+            </div>
+            <div class="footer-social">
+                <a href="https://github.com/smitmalaviya" target="_blank" class="social-link">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://linkedin.com/in/smitmalaviya" target="_blank" class="social-link">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://twitter.com/smitmalaviya" target="_blank" class="social-link">
+                    <i class="fab fa-twitter"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
