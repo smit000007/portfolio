@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </head>
 <body>
     <!-- Navigation -->
@@ -99,28 +100,24 @@
         <div class="container">
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-number" data-target="90">0</div>
-                    <div class="stat-label">+ Labs</div>
+                    <div class="stat-number" data-target="90"></div>
+                    <div class="stat-label">Labs</div>
                     <div class="stat-glow"></div>
                 </div>
+               
                 <div class="stat-card">
-                    <div class="stat-number" data-target="10">0</div>
-                    <div class="stat-label">Writeups</div>
-                    <div class="stat-glow"></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" data-target="25">0</div>
+                    <div class="stat-number" data-target="25"></div>
                     <div class="stat-label">Security Tools</div>
                     <div class="stat-glow"></div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number" data-target="5">0</div>
+                    <div class="stat-number" data-target="5"></div>
                     <div class="stat-label">Years Experience</div>
                     <div class="stat-glow"></div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number" data-target="14">0</div>
-                    <div class="stat-label">+ Certifications</div>
+                    <div class="stat-number" data-target="14"></div>
+                    <div class="stat-label">Certifications</div>
                     <div class="stat-glow"></div>
                 </div>
             </div>
@@ -507,8 +504,11 @@
     <!-- Contact Section -->
     <section id="contact" class="contact">
         <div class="container">
-            <h2 class="section-title">Contact</h2>
+            <h2 class="section-title">Get In Touch</h2>
+            <p class="section-subtitle">Ready to collaborate? Let's discuss your next project.</p>
+            
             <div class="contact-container">
+                <!-- Contact Form -->
                 <div class="contact-form-container">
                     <div class="terminal-window">
                         <div class="terminal-header">
@@ -519,31 +519,158 @@
                             </div>
                             <div class="terminal-title">contact@smit:~$</div>
                         </div>
-                        <form class="contact-form">
-                            <div class="form-group">
-                                <label for="name">Name:</label>
-                                <input type="text" id="name" name="name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Email:</label>
-                                <input type="email" id="email" name="email" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="subject">Subject:</label>
-                                <input type="text" id="subject" name="subject" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="message">Message:</label>
-                                <textarea id="message" name="message" rows="5" required></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-submit">Send Message</button>
-                        </form>
+                        <div class="terminal-content">
+                            <form class="contact-form" id="contact-form" novalidate>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="name">
+                                            <i class="fas fa-user"></i>
+                                            Full Name *
+                                        </label>
+                                        <input 
+                                            type="text" 
+                                            id="name" 
+                                            name="name" 
+                                            required 
+                                            placeholder="Enter your full name"
+                                            autocomplete="name"
+                                        >
+                                        <div class="error-message" id="name-error"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">
+                                            <i class="fas fa-envelope"></i>
+                                            Email Address *
+                                        </label>
+                                        <input 
+                                            type="email" 
+                                            id="email" 
+                                            name="email" 
+                                            required 
+                                            placeholder="your.email@example.com"
+                                            autocomplete="email"
+                                        >
+                                        <div class="error-message" id="email-error"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="subject">
+                                        <i class="fas fa-tag"></i>
+                                        Subject *
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        id="subject" 
+                                        name="subject" 
+                                        required 
+                                        placeholder="What's this about?"
+                                        autocomplete="off"
+                                    >
+                                    <div class="error-message" id="subject-error"></div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="message">
+                                        <i class="fas fa-comment"></i>
+                                        Message *
+                                    </label>
+                                    <textarea 
+                                        id="message" 
+                                        name="message" 
+                                        rows="6" 
+                                        required 
+                                        maxlength="1000"
+                                        placeholder="Tell me about your project, questions, or collaboration ideas..."
+                                    ></textarea>
+                                    <div class="form-footer">
+                                        <div class="char-counter">
+                                            <span id="char-count">0</span>/1000 characters
+                                        </div>
+                                        <div class="error-message" id="message-error"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-submit" id="submit-btn">
+                                        <i class="fas fa-paper-plane"></i>
+                                        <span class="btn-text">Send Message</span>
+                                        <i class="fas fa-spinner fa-spin loading-icon" style="display: none;"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-test" id="test-btn">
+                                        <i class="fas fa-vial"></i>
+                                        Test Connection
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
+                
+                <!-- Contact Information -->
                 <div class="contact-info">
+                    <div class="contact-card">
+                        <div class="contact-header">
+                            <h3><i class="fas fa-info-circle"></i> Contact Information</h3>
+                        </div>
+                        
+                        <div class="contact-methods">
+                            <div class="contact-method">
+                                <div class="method-icon">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div class="method-content">
+                                    <h4>Email</h4>
+                                    <a href="mailto:smitmalaviya2006@gmail.com" class="contact-link">
+                                        smitmalaviya2006@gmail.com
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-method">
+                                <div class="method-icon">
+                                    <i class="fab fa-linkedin"></i>
+                                </div>
+                                <div class="method-content">
+                                    <h4>LinkedIn</h4>
+                                    <a href="https://linkedin.com/in/smitmalaviya" target="_blank" class="contact-link">
+                                        /in/smitmalaviya
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-method">
+                                <div class="method-icon">
+                                    <i class="fab fa-github"></i>
+                                </div>
+                                <div class="method-content">
+                                    <h4>GitHub</h4>
+                                    <a href="https://github.com/smitmalaviya" target="_blank" class="contact-link">
+                                        /smitmalaviya
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-status">
+                            <div class="status-item">
+                                <span class="status-label">Response Time:</span>
+                                <span class="status-value">Within 24 hours</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="status-label">Availability:</span>
+                                <span class="status-value available">Available for Projects</span>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="contact-alternative">
-                        <h3>Email Instead</h3>
-                        <a href="mailto:smitmalaviya2006@gmail.com" class="email-link">smitmalaviya2006@gmail.com</a>
+                        <h4><i class="fas fa-lightbulb"></i> Alternative Contact</h4>
+                        <p>Prefer direct email? Feel free to reach out directly:</p>
+                        <a href="mailto:smitmalaviya2006@gmail.com" class="btn btn-email">
+                            <i class="fas fa-envelope"></i>
+                            Send Direct Email
+                        </a>
                     </div>
                 </div>
             </div>

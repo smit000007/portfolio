@@ -488,36 +488,347 @@ function initPerformanceOptimizations() {
     });
 }
 
-// Form Handling
+// EmailJS Configuration and Form Handling
+let lastSubmissionTime = 0;
+const SUBMISSION_COOLDOWN = 30000; // 30 seconds between submissions
+
 function initFormHandling() {
-    const contactForm = document.querySelector('.contact-form');
+    // Initialize EmailJS with enhanced error handling
+    try {
+        // Check if EmailJS is loaded
+        if (typeof emailjs === 'undefined') {
+            console.error('EmailJS library not loaded');
+            showNotification('Email service not available. Please check your internet connection.', 'error');
+            return;
+        }
+        
+        emailjs.init("dQmrhnlupg0TUCIgL");
+        console.log('EmailJS initialized successfully with Public Key: dQmrhnlupg0TUCIgL');
+        
+        // Test EmailJS availability
+        if (emailjs.send) {
+            console.log('EmailJS send function is available');
+        } else {
+            console.error('EmailJS send function not available');
+        }
+    } catch (error) {
+        console.error('Failed to initialize EmailJS:', error);
+        showNotification('Email service initialization failed. Please refresh the page.', 'error');
+        return;
+    }
     
-    if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
+    const contactForm = document.getElementById('contact-form');
+    const testBtn = document.getElementById('test-btn');
+    
+    if (!contactForm) {
+        console.error('Contact form not found');
+        showNotification('Contact form not found. Please refresh the page.', 'error');
+        return;
+    }
+    
+    console.log('Contact form found and ready for handling');
+    
+    // Initialize form elements
+    const formElements = {
+        name: contactForm.querySelector('#name'),
+        email: contactForm.querySelector('#email'),
+        subject: contactForm.querySelector('#subject'),
+        message: contactForm.querySelector('#message'),
+        submitBtn: contactForm.querySelector('#submit-btn'),
+        charCount: contactForm.querySelector('#char-count')
+    };
+    
+    // Error message elements
+    const errorElements = {
+        name: contactForm.querySelector('#name-error'),
+        email: contactForm.querySelector('#email-error'),
+        subject: contactForm.querySelector('#subject-error'),
+        message: contactForm.querySelector('#message-error')
+    };
+    
+    // Add character counter functionality
+    if (formElements.message && formElements.charCount) {
+        formElements.message.addEventListener('input', () => {
+            const length = formElements.message.value.length;
+            formElements.charCount.textContent = length;
             
-            // Get form data
-            const formData = new FormData(contactForm);
-            const name = formData.get('name');
-            const email = formData.get('email');
-            const subject = formData.get('subject');
-            const message = formData.get('message');
-            
-            // Simulate form submission
-            const submitBtn = contactForm.querySelector('.btn-submit');
-            const originalText = submitBtn.textContent;
-            
-            submitBtn.textContent = 'Sending...';
-            submitBtn.disabled = true;
-            
-            setTimeout(() => {
-                // Simulate success
-                showNotification('Message sent successfully!', 'success');
-                contactForm.reset();
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-            }, 2000);
+            // Change color based on length
+            if (length > 900) {
+                formElements.charCount.style.color = '#ff5f56';
+            } else if (length > 800) {
+                formElements.charCount.style.color = '#ffbd2e';
+            } else {
+                formElements.charCount.style.color = '#00d4ff';
+            }
         });
+    }
+    
+    // Real-time validation
+    Object.keys(formElements).forEach(key => {
+        if (formElements[key] && formElements[key].tagName === 'INPUT' || formElements[key].tagName === 'TEXTAREA') {
+            formElements[key].addEventListener('blur', () => validateField(key, formElements[key].value));
+            formElements[key].addEventListener('input', () => clearFieldError(key));
+        }
+    });
+    
+    // Form submission handler
+    contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        console.log('Form submission started');
+        
+        // Rate limiting check
+        const now = Date.now();
+        if (now - lastSubmissionTime < SUBMISSION_COOLDOWN) {
+            const remainingTime = Math.ceil((SUBMISSION_COOLDOWN - (now - lastSubmissionTime)) / 1000);
+            showNotification(`Please wait ${remainingTime} seconds before sending another message`, 'warning');
+            return;
+        }
+        
+        // Validate all fields
+        const isValid = validateAllFields();
+        if (!isValid) {
+            showNotification('Please fix the errors in the form', 'error');
+            return;
+        }
+        
+        // Get form data
+        const formData = new FormData(contactForm);
+        const name = formData.get('name');
+        const email = formData.get('email');
+        const subject = formData.get('subject');
+        const message = formData.get('message');
+        
+        console.log('Form data collected:', { name, email, subject, message: message?.substring(0, 50) + '...' });
+        
+        // Trim whitespace
+        const trimmedName = name.trim();
+        const trimmedEmail = email.trim();
+        const trimmedSubject = subject.trim();
+        const trimmedMessage = message.trim();
+        
+        // Update button state
+        setSubmitButtonLoading(true);
+        
+        // Prepare template parameters
+        const templateParams = {
+            from_name: trimmedName,
+            from_email: trimmedEmail,
+            subject: trimmedSubject,
+            message: trimmedMessage,
+            to_name: 'Smit Malaviya',
+            reply_to: trimmedEmail
+        };
+        
+        console.log('Template parameters prepared:', templateParams);
+        console.log('Using Service ID: service_e38iyv4');
+        console.log('Using Template ID: template_3nyenng');
+        
+        // Send email using EmailJS with enhanced error handling
+        try {
+            emailjs.send(
+                'service_e38iyv4',
+                'template_3nyenng',
+                templateParams
+            )
+            .then(function(response) {
+                console.log('EmailJS SUCCESS!', response);
+                console.log('Status:', response.status);
+                console.log('Text:', response.text);
+                showNotification('Message sent successfully! I\'ll get back to you soon.', 'success');
+                contactForm.reset();
+                resetCharCounter();
+                setSubmitButtonLoading(false);
+                lastSubmissionTime = Date.now();
+            }, function(error) {
+                console.error('EmailJS FAILED!', error);
+                console.error('Error details:', {
+                    status: error.status,
+                    text: error.text,
+                    message: error.message,
+                    stack: error.stack
+                });
+                
+                let errorMessage = 'Failed to send message. Please try again or email me directly.';
+                
+                // Provide more specific error messages
+                if (error.status === 400) {
+                    errorMessage = 'Invalid request. Please check your EmailJS configuration.';
+                } else if (error.status === 401) {
+                    errorMessage = 'Authentication failed. Please check your EmailJS Public Key.';
+                } else if (error.status === 404) {
+                    errorMessage = 'Service or template not found. Please check your EmailJS Service ID and Template ID.';
+                } else if (error.status === 429) {
+                    errorMessage = 'Too many requests. Please wait a moment and try again.';
+                } else if (error.status >= 500) {
+                    errorMessage = 'Server error. Please try again later.';
+                }
+                
+                showNotification(errorMessage, 'error');
+                setSubmitButtonLoading(false);
+            });
+        } catch (sendError) {
+            console.error('Exception during emailjs.send:', sendError);
+            showNotification('Unexpected error occurred. Please try again.', 'error');
+            setSubmitButtonLoading(false);
+        }
+    });
+    
+    // Test button handler
+    if (testBtn) {
+        testBtn.addEventListener('click', testEmailJSConnection);
+    }
+    
+    // Helper functions
+    function validateField(fieldName, value) {
+        const trimmedValue = value.trim();
+        
+        switch (fieldName) {
+            case 'name':
+                if (!trimmedValue) {
+                    showFieldError('name', 'Name is required');
+                    return false;
+                }
+                if (trimmedValue.length < 2) {
+                    showFieldError('name', 'Name must be at least 2 characters');
+                    return false;
+                }
+                break;
+                
+            case 'email':
+                if (!trimmedValue) {
+                    showFieldError('email', 'Email is required');
+                    return false;
+                }
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(trimmedValue)) {
+                    showFieldError('email', 'Please enter a valid email address');
+                    return false;
+                }
+                break;
+                
+            case 'subject':
+                if (!trimmedValue) {
+                    showFieldError('subject', 'Subject is required');
+                    return false;
+                }
+                if (trimmedValue.length < 5) {
+                    showFieldError('subject', 'Subject must be at least 5 characters');
+                    return false;
+                }
+                break;
+                
+            case 'message':
+                if (!trimmedValue) {
+                    showFieldError('message', 'Message is required');
+                    return false;
+                }
+                if (trimmedValue.length < 10) {
+                    showFieldError('message', 'Message must be at least 10 characters');
+                    return false;
+                }
+                if (trimmedValue.length > 1000) {
+                    showFieldError('message', 'Message must be less than 1000 characters');
+                    return false;
+                }
+                break;
+        }
+        
+        clearFieldError(fieldName);
+        return true;
+    }
+    
+    function validateAllFields() {
+        let isValid = true;
+        
+        Object.keys(formElements).forEach(key => {
+            if (formElements[key] && (formElements[key].tagName === 'INPUT' || formElements[key].tagName === 'TEXTAREA')) {
+                if (!validateField(key, formElements[key].value)) {
+                    isValid = false;
+                }
+            }
+        });
+        
+        return isValid;
+    }
+    
+    function showFieldError(fieldName, message) {
+        if (errorElements[fieldName]) {
+            errorElements[fieldName].textContent = message;
+            errorElements[fieldName].classList.add('show');
+        }
+        
+        if (formElements[fieldName]) {
+            formElements[fieldName].style.borderColor = '#ff5f56';
+        }
+    }
+    
+    function clearFieldError(fieldName) {
+        if (errorElements[fieldName]) {
+            errorElements[fieldName].textContent = '';
+            errorElements[fieldName].classList.remove('show');
+        }
+        
+        if (formElements[fieldName]) {
+            formElements[fieldName].style.borderColor = '';
+        }
+    }
+    
+    function setSubmitButtonLoading(loading) {
+        if (formElements.submitBtn) {
+            if (loading) {
+                formElements.submitBtn.classList.add('loading');
+                formElements.submitBtn.disabled = true;
+            } else {
+                formElements.submitBtn.classList.remove('loading');
+                formElements.submitBtn.disabled = false;
+            }
+        }
+    }
+    
+    function resetCharCounter() {
+        if (formElements.charCount) {
+            formElements.charCount.textContent = '0';
+            formElements.charCount.style.color = '#00d4ff';
+        }
+    }
+    
+    // Enhanced test function for debugging
+    function testEmailJSConnection() {
+        console.log('=== EmailJS Connection Test ===');
+        console.log('EmailJS object available:', typeof emailjs !== 'undefined');
+        console.log('EmailJS send function available:', typeof emailjs.send === 'function');
+        console.log('Public Key:', 'dQmrhnlupg0TUCIgL');
+        console.log('Service ID:', 'service_e38iyv4');
+        console.log('Template ID:', 'template_3nyenng');
+        
+        const testParams = {
+            from_name: 'Test User',
+            from_email: 'test@example.com',
+            subject: 'Test Message',
+            message: 'This is a test message to verify EmailJS is working.',
+            to_name: 'Smit Malaviya',
+            reply_to: 'test@example.com'
+        };
+        
+        console.log('Sending test email with params:', testParams);
+        
+        // Show loading state on test button
+        const originalText = testBtn.innerHTML;
+        testBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Testing...';
+        testBtn.disabled = true;
+        
+        emailjs.send('service_e38iyv4', 'template_3nyenng', testParams)
+            .then(function(response) {
+                console.log('✅ EmailJS test successful:', response);
+                showNotification('EmailJS test successful! Check console for details.', 'success');
+                testBtn.innerHTML = originalText;
+                testBtn.disabled = false;
+            }, function(error) {
+                console.error('❌ EmailJS test failed:', error);
+                showNotification('EmailJS test failed! Check console for details.', 'error');
+                testBtn.innerHTML = originalText;
+                testBtn.disabled = false;
+            });
     }
 }
 
@@ -590,6 +901,21 @@ function showNotification(message, type = 'info') {
     notification.textContent = message;
     
     // Add styles
+    let backgroundColor;
+    switch(type) {
+        case 'success':
+            backgroundColor = '#00ff41';
+            break;
+        case 'error':
+            backgroundColor = '#ff5f56';
+            break;
+        case 'warning':
+            backgroundColor = '#ffbd2e';
+            break;
+        default:
+            backgroundColor = '#00d4ff';
+    }
+    
     notification.style.cssText = `
         position: fixed;
         top: 20px;
@@ -602,8 +928,10 @@ function showNotification(message, type = 'info') {
         z-index: 10000;
         transform: translateX(100%);
         transition: transform 0.3s ease;
-        ${type === 'success' ? 'background: #00ff41;' : 'background: #ff5f56;'}
+        background: ${backgroundColor};
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        max-width: 300px;
+        word-wrap: break-word;
     `;
     
     document.body.appendChild(notification);
@@ -613,13 +941,14 @@ function showNotification(message, type = 'info') {
         notification.style.transform = 'translateX(0)';
     }, 100);
     
-    // Remove after 3 seconds
+    // Remove after 5 seconds for errors, 3 seconds for others
+    const duration = type === 'error' ? 5000 : 3000;
     setTimeout(() => {
         notification.style.transform = 'translateX(100%)';
         setTimeout(() => {
             notification.remove();
         }, 300);
-    }, 3000);
+    }, duration);
 }
 
 // Parallax Effect
