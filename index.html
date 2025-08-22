@@ -62,34 +62,142 @@
     <section id="about" class="about">
         <div class="container">
             <h2 class="section-title">About Me</h2>
-            <div class="terminal-window">
+            <div class="professional-terminal">
                 <div class="terminal-header">
-                    <div class="terminal-buttons">
-                        <span class="terminal-btn close"></span>
-                        <span class="terminal-btn minimize"></span>
-                        <span class="terminal-btn maximize"></span>
+                    <div class="terminal-title">
+                        <i class="fas fa-terminal"></i>
+                        <span>Developer Console</span>
                     </div>
-                    <div class="terminal-title">smit@security:~$</div>
+                    <div class="terminal-controls">
+                        <button class="control-btn minimize" title="Minimize">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button class="control-btn maximize" title="Maximize">
+                            <i class="fas fa-expand"></i>
+                        </button>
+                        <button class="control-btn close" title="Close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
                 </div>
-                <div class="terminal-content">
-                    <p class="terminal-text">
-                        <span class="prompt">$</span> whoami<br>
-                        <span class="output">Smit Malaviya - Security Architect & Ethical Hacker</span><br><br>
-                        
-                        <span class="prompt">$</span> cat about.txt<br>
-                        <span class="output">
-                            Passionate cybersecurity professional with expertise in threat detection, 
-                            penetration testing, and security architecture. Specializing in AI/ML security, 
-                            blockchain technology, and full-stack development. Committed to building 
-                            secure, scalable systems and advancing the field of cybersecurity.
-                        </span><br><br>
-                        
-                        <span class="prompt">$</span> <span class="cursor-blink">_</span>
-                    </p>
-                </div>
-                <div class="terminal-actions">
-                    <a href="assets/resume/smit-malaviya-resume.pdf" target="_blank" class="btn btn-terminal">Resume Preview</a>
-                    <a href="assets/resume/smit-malaviya-resume.pdf" download="Smit_Malaviya_Resume.pdf" class="btn btn-terminal">Download Resume</a>
+                <div class="terminal-body">
+                    <div class="terminal-output" id="terminal-output">
+                        <div class="welcome-message">
+                            <div class="output-line">
+                                <span class="prompt">$</span>
+                                <span class="command">whoami</span>
+                            </div>
+                            <div class="output-content">
+                                <div class="profile-info">
+                                    <h3>Smit Malaviya</h3>
+                                    <p class="title">Cybersecurity Specialist & Ethical Hacker</p>
+                                    <p class="description">Passionate about protecting digital assets and securing systems. Specialized in penetration testing, vulnerability assessment, and security architecture.</p>
+                                </div>
+                            </div>
+                            <div class="output-line">
+                                <span class="prompt">$</span>
+                                <span class="command">ls skills/</span>
+                            </div>
+                            <div class="output-content">
+                                <div class="skills-grid">
+                                    <div class="skill-category">
+                                        <h4>🔒 Security Tools</h4>
+                                        <div class="skill-tags">
+                                            <span class="skill-tag">Nmap</span>
+                                            <span class="skill-tag">Wireshark</span>
+                                            <span class="skill-tag">Metasploit</span>
+                                            <span class="skill-tag">Burp Suite</span>
+                                            <span class="skill-tag">Kali Linux</span>
+                                        </div>
+                                    </div>
+                                    <div class="skill-category">
+                                        <h4>🛡️ Security Domains</h4>
+                                        <div class="skill-tags">
+                                            <span class="skill-tag">Network Security</span>
+                                            <span class="skill-tag">Web App Security</span>
+                                            <span class="skill-tag">Mobile Security</span>
+                                            <span class="skill-tag">Cloud Security</span>
+                                            <span class="skill-tag">Incident Response</span>
+                                        </div>
+                                    </div>
+                                    <div class="skill-category">
+                                        <h4>💻 Technical Skills</h4>
+                                        <div class="skill-tags">
+                                            <span class="skill-tag">Python</span>
+                                            <span class="skill-tag">Bash Scripting</span>
+                                            <span class="skill-tag">SQL Injection</span>
+                                            <span class="skill-tag">XSS</span>
+                                            <span class="skill-tag">Cryptography</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="output-line">
+                                <span class="prompt">$</span>
+                                <span class="command">cat experience.txt</span>
+                            </div>
+                            <div class="output-content">
+                                <div class="experience-list">
+                                    <div class="experience-item">
+                                        <div class="exp-header">
+                                            <span class="exp-title">Security Analyst</span>
+                                            <span class="exp-period">2023 - Present</span>
+                                        </div>
+                                        <p class="exp-company">CyberDefense Corp</p>
+                                        <p class="exp-description">Conducted vulnerability assessments on enterprise networks. Performed penetration testing on web applications.</p>
+                                    </div>
+                                    <div class="experience-item">
+                                        <div class="exp-header">
+                                            <span class="exp-title">Junior Penetration Tester</span>
+                                            <span class="exp-period">2022 - 2023</span>
+                                        </div>
+                                        <p class="exp-company">SecureNet Solutions</p>
+                                        <p class="exp-description">Executed security audits for client systems. Identified and documented security vulnerabilities.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="output-line">
+                                <span class="prompt">$</span>
+                                <span class="command">help</span>
+                            </div>
+                            <div class="output-content">
+                                <div class="help-menu">
+                                    <h4>Available Commands:</h4>
+                                    <div class="command-list">
+                                        <div class="command-item">
+                                            <span class="cmd-name">about</span>
+                                            <span class="cmd-desc">- View detailed information about me</span>
+                                        </div>
+                                        <div class="command-item">
+                                            <span class="cmd-name">skills</span>
+                                            <span class="cmd-desc">- Display technical skills and expertise</span>
+                                        </div>
+                                        <div class="command-item">
+                                            <span class="cmd-name">experience</span>
+                                            <span class="cmd-desc">- Show work experience and projects</span>
+                                        </div>
+                                        <div class="command-item">
+                                            <span class="cmd-name">contact</span>
+                                            <span class="cmd-desc">- Get contact information</span>
+                                        </div>
+                                        <div class="command-item">
+                                            <span class="cmd-name">resume</span>
+                                            <span class="cmd-desc">- Download my resume</span>
+                                        </div>
+                                        <div class="command-item">
+                                            <span class="cmd-name">clear</span>
+                                            <span class="cmd-desc">- Clear terminal output</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="terminal-input-area">
+                        <span class="input-prompt">$</span>
+                        <input type="text" id="terminal-input" class="terminal-input" placeholder="Type 'help' for available commands..." autocomplete="off">
+                        <div class="input-cursor"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -634,7 +742,7 @@
                                 <div class="method-content">
                                     <h4>LinkedIn</h4>
                                     <a href="https://www.linkedin.com/in/smit-malaviya-164185228/" target="_blank" class="contact-link">
-                                        /in/smitmalaviya
+                                        /smitmalaviya
                                     </a>
                                 </div>
                             </div>

@@ -859,39 +859,246 @@ function initProjectFilters() {
     });
 }
 
-// Terminal Effects
+// Professional Terminal Functionality
 function initTerminalEffects() {
-    const terminalWindows = document.querySelectorAll('.terminal-window');
+    const terminalOutput = document.getElementById('terminal-output');
+    const terminalInput = document.getElementById('terminal-input');
     
-    terminalWindows.forEach(terminal => {
-        const closeBtn = terminal.querySelector('.close');
-        const minimizeBtn = terminal.querySelector('.minimize');
-        const maximizeBtn = terminal.querySelector('.maximize');
+    if (!terminalOutput || !terminalInput) return;
+    
+    function addOutputLine(command, output) {
+        const outputLine = document.createElement('div');
+        outputLine.className = 'output-line';
+        outputLine.innerHTML = `
+            <span class="prompt">$</span>
+            <span class="command">${command}</span>
+        `;
+        terminalOutput.appendChild(outputLine);
         
-        if (closeBtn) {
-            closeBtn.addEventListener('click', () => {
-                terminal.style.transform = 'scale(0.8)';
-                terminal.style.opacity = '0';
+        if (output) {
+            const outputContent = document.createElement('div');
+            outputContent.className = 'output-content';
+            outputContent.innerHTML = output;
+            terminalOutput.appendChild(outputContent);
+        }
+        
+        terminalOutput.scrollTop = terminalOutput.scrollHeight;
+    }
+    
+    function processCommand(command) {
+        const cmd = command.toLowerCase().trim();
+        
+        switch(cmd) {
+            case 'about':
+                addOutputLine('about', `
+                    <div class="profile-info">
+                        <h3>Smit Malaviya</h3>
+                        <p class="title">Cybersecurity Specialist & Ethical Hacker</p>
+                        <p class="description">Passionate about protecting digital assets and securing systems. Specialized in penetration testing, vulnerability assessment, and security architecture. I focus on identifying and mitigating security risks while helping organizations build robust defense mechanisms.</p>
+                    </div>
+                `);
+                break;
+            case 'skills':
+                addOutputLine('skills', `
+                    <div class="skills-grid">
+                        <div class="skill-category">
+                            <h4>🔒 Security Tools</h4>
+                            <div class="skill-tags">
+                                <span class="skill-tag">Nmap</span>
+                                <span class="skill-tag">Wireshark</span>
+                                <span class="skill-tag">Metasploit</span>
+                                <span class="skill-tag">Burp Suite</span>
+                                <span class="skill-tag">OWASP ZAP</span>
+                                <span class="skill-tag">Kali Linux</span>
+                            </div>
+                        </div>
+                        <div class="skill-category">
+                            <h4>🛡️ Security Domains</h4>
+                            <div class="skill-tags">
+                                <span class="skill-tag">Network Security</span>
+                                <span class="skill-tag">Web App Security</span>
+                                <span class="skill-tag">Mobile Security</span>
+                                <span class="skill-tag">Cloud Security</span>
+                                <span class="skill-tag">Incident Response</span>
+                            </div>
+                        </div>
+                        <div class="skill-category">
+                            <h4>💻 Technical Skills</h4>
+                            <div class="skill-tags">
+                                <span class="skill-tag">Python</span>
+                                <span class="skill-tag">Bash Scripting</span>
+                                <span class="skill-tag">SQL Injection</span>
+                                <span class="skill-tag">XSS</span>
+                                <span class="skill-tag">Cryptography</span>
+                                <span class="skill-tag">Forensics</span>
+                            </div>
+                        </div>
+                        <div class="skill-category">
+                            <h4>📋 Certifications</h4>
+                            <div class="skill-tags">
+                                <span class="skill-tag">CompTIA Security+</span>
+                                <span class="skill-tag">CEH</span>
+                                <span class="skill-tag">CISSP</span>
+                                <span class="skill-tag">OSCP</span>
+                                <span class="skill-tag">Bug Bounty</span>
+                            </div>
+                        </div>
+                    </div>
+                `);
+                break;
+            case 'experience':
+                addOutputLine('experience', `
+                    <div class="experience-list">
+                        <div class="experience-item">
+                            <div class="exp-header">
+                                <span class="exp-title">Security Analyst</span>
+                                <span class="exp-period">2023 - Present</span>
+                            </div>
+                            <p class="exp-company">CyberDefense Corp</p>
+                            <p class="exp-description">Conducted vulnerability assessments on enterprise networks. Performed penetration testing on web applications. Developed security policies and procedures. Responded to security incidents and threats.</p>
+                        </div>
+                        <div class="experience-item">
+                            <div class="exp-header">
+                                <span class="exp-title">Junior Penetration Tester</span>
+                                <span class="exp-period">2022 - 2023</span>
+                            </div>
+                            <p class="exp-company">SecureNet Solutions</p>
+                            <p class="exp-description">Executed security audits for client systems. Identified and documented security vulnerabilities. Created detailed security assessment reports. Assisted in security awareness training.</p>
+                        </div>
+                        <div class="experience-item">
+                            <div class="exp-header">
+                                <span class="exp-title">Security Researcher</span>
+                                <span class="exp-period">2021 - Present</span>
+                            </div>
+                            <p class="exp-company">Independent</p>
+                            <p class="exp-description">Participated in bug bounty programs. Researched emerging security threats. Contributed to open-source security tools. Published security advisories and findings.</p>
+                        </div>
+                    </div>
+                `);
+                break;
+            case 'contact':
+                addOutputLine('contact', `
+                    <div class="contact-info">
+                        <p><strong>Email:</strong> smitmalaviya2006@gmail.com</p>
+                        <p><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/smit-malaviya-164185228/" target="_blank">/smitmalaviya</a></p>
+                        <p><strong>GitHub:</strong> <a href="https://github.com/smitmalaviya" target="_blank">/smitmalaviya</a></p>
+                        <p><strong>Location:</strong> India</p>
+                        <p><strong>Availability:</strong> Open to new opportunities</p>
+                    </div>
+                `);
+                break;
+            case 'resume':
+                addOutputLine('resume', `
+                    <div class="resume-info">
+                        <p>Opening resume in new tab...</p>
+                        <p><a href="assets/resume/smit-malaviya-resume.pdf" target="_blank" class="resume-link">📄 Download Resume</a></p>
+                    </div>
+                `);
                 setTimeout(() => {
-                    terminal.style.display = 'none';
-                }, 300);
-            });
+                    window.open('assets/resume/smit-malaviya-resume.pdf', '_blank');
+                }, 1000);
+                break;
+            case 'clear':
+                terminalOutput.innerHTML = '';
+                break;
+            case 'help':
+                addOutputLine('help', `
+                    <div class="help-menu">
+                        <h4>Available Commands:</h4>
+                        <div class="command-list">
+                            <div class="command-item">
+                                <span class="cmd-name">about</span>
+                                <span class="cmd-desc">- View detailed information about me</span>
+                            </div>
+                            <div class="command-item">
+                                <span class="cmd-name">skills</span>
+                                <span class="cmd-desc">- Display technical skills and expertise</span>
+                            </div>
+                            <div class="command-item">
+                                <span class="cmd-name">experience</span>
+                                <span class="cmd-desc">- Show work experience and projects</span>
+                            </div>
+                            <div class="command-item">
+                                <span class="cmd-name">contact</span>
+                                <span class="cmd-desc">- Get contact information</span>
+                            </div>
+                            <div class="command-item">
+                                <span class="cmd-name">resume</span>
+                                <span class="cmd-desc">- Download my resume</span>
+                            </div>
+                            <div class="command-item">
+                                <span class="cmd-name">clear</span>
+                                <span class="cmd-desc">- Clear terminal output</span>
+                            </div>
+                        </div>
+                    </div>
+                `);
+                break;
+            default:
+                if (command.trim()) {
+                    addOutputLine(command, `
+                        <div class="error-message">
+                            Command not found: ${command}<br>
+                            Type 'help' for available commands.
+                        </div>
+                    `);
+                }
+        }
+    }
+    
+    // Event listener for input
+    if (terminalInput) {
+        terminalInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const command = terminalInput.value;
+                processCommand(command);
+                terminalInput.value = '';
+            }
+        });
+        
+        // Focus on input when terminal is clicked
+        terminalOutput.addEventListener('click', () => {
+            terminalInput.focus();
+        });
+    }
+    
+    // Add dynamic CSS for additional styles
+    const style = document.createElement('style');
+    style.textContent = `
+        .contact-info p {
+            margin: 8px 0;
+            color: #b0b0b0;
         }
         
-        if (minimizeBtn) {
-            minimizeBtn.addEventListener('click', () => {
-                terminal.style.transform = 'scale(0.9)';
-                terminal.style.opacity = '0.7';
-            });
+        .contact-info a {
+            color: #4CAF50;
+            text-decoration: none;
         }
         
-        if (maximizeBtn) {
-            maximizeBtn.addEventListener('click', () => {
-                terminal.style.transform = 'scale(1)';
-                terminal.style.opacity = '1';
-            });
+        .contact-info a:hover {
+            text-decoration: underline;
         }
-    });
+        
+        .resume-info {
+            color: #b0b0b0;
+        }
+        
+        .resume-link {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .resume-link:hover {
+            text-decoration: underline;
+        }
+        
+        .error-message {
+            color: #ff5f56;
+            font-style: italic;
+        }
+    `;
+    document.head.appendChild(style);
 }
 
 // Notification System
