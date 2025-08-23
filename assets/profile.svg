@@ -1,0 +1,44 @@
+<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00ff41;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00d4ff;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="400" fill="url(#bg)"/>
+  
+  <!-- Grid pattern -->
+  <defs>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#00ff41" stroke-width="0.5" opacity="0.3"/>
+    </pattern>
+  </defs>
+  <rect width="400" height="400" fill="url(#grid)"/>
+  
+  <!-- Profile icon -->
+  <circle cx="200" cy="140" r="60" fill="url(#accent)" opacity="0.8"/>
+  <circle cx="200" cy="140" r="50" fill="url(#bg)"/>
+  
+  <!-- Body -->
+  <ellipse cx="200" cy="280" rx="80" ry="60" fill="url(#accent)" opacity="0.8"/>
+  
+  <!-- Text -->
+  <text x="200" y="350" text-anchor="middle" fill="#00ff41" font-family="Arial, sans-serif" font-size="16" font-weight="bold">
+    SMIT MALAVIYA
+  </text>
+  <text x="200" y="370" text-anchor="middle" fill="#00d4ff" font-family="Arial, sans-serif" font-size="12">
+    Security Architect
+  </text>
+  
+  <!-- Glow effects -->
+  <circle cx="200" cy="140" r="70" fill="none" stroke="#00ff41" stroke-width="2" opacity="0.5">
+    <animate attributeName="r" values="70;75;70" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.5;0.8;0.5" dur="2s" repeatCount="indefinite"/>
+  </circle>
+</svg>

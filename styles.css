@@ -212,6 +212,72 @@ body::before {
 .hero-content {
     z-index: 3;
     text-align: center;
+    width: 100%;
+}
+
+.hero-profile-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3rem;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.profile-photo-container {
+    flex-shrink: 0;
+    position: relative;
+}
+
+.profile-photo {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--accent-green);
+    box-shadow: 
+        0 0 20px rgba(0, 255, 65, 0.6),
+        0 0 40px rgba(0, 255, 65, 0.4),
+        0 0 60px rgba(0, 255, 65, 0.2),
+        inset 0 0 20px rgba(0, 255, 65, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 2;
+}
+
+.profile-photo::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, var(--accent-green), var(--accent-blue), var(--accent-cyan));
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    animation: rotate 3s linear infinite;
+}
+
+.profile-photo:hover {
+    transform: scale(1.05);
+    box-shadow: 
+        0 0 30px rgba(0, 255, 65, 0.8),
+        0 0 60px rgba(0, 255, 65, 0.6),
+        0 0 90px rgba(0, 255, 65, 0.4),
+        inset 0 0 30px rgba(0, 255, 65, 0.2);
+}
+
+.profile-photo:hover::before {
+    opacity: 1;
+}
+
+.hero-text-content {
+    flex: 1;
+    text-align: left;
+    max-width: 600px;
 }
 
 .hero-title {
@@ -294,6 +360,15 @@ body::before {
             0 0 25px rgba(0, 255, 65, 0.8),
             0 0 35px rgba(0, 255, 65, 0.6),
             0 0 45px rgba(0, 255, 65, 0.4);
+    }
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
     }
 }
 
@@ -730,6 +805,32 @@ body::before {
 
 /* Terminal Responsive Design */
 @media (max-width: 768px) {
+    /* Hero Section Responsive */
+    .hero-profile-section {
+        flex-direction: column;
+        text-align: center;
+        gap: 2rem;
+    }
+    
+    .profile-photo {
+        width: 220px;
+        height: 220px;
+    }
+    
+    .hero-text-content {
+        text-align: center;
+        max-width: 100%;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .greeting {
+        font-size: 1.2rem;
+    }
+    
+    /* Terminal Responsive Design */
     .terminal-window {
         margin: 0 10px;
         border-radius: 8px;
@@ -806,6 +907,29 @@ body::before {
 }
 
 @media (max-width: 480px) {
+    /* Hero Section Responsive */
+    .hero-profile-section {
+        gap: 1.5rem;
+    }
+    
+    .profile-photo {
+        width: 180px;
+        height: 180px;
+    }
+    
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .greeting {
+        font-size: 1rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    /* Terminal Responsive Design */
     .terminal-window {
         margin: 0 5px;
         border-radius: 6px;
