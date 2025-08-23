@@ -408,7 +408,7 @@ function initSmoothScrolling() {
             const targetSection = document.querySelector(targetId);
             
             if (targetSection) {
-                const offsetTop = targetSection.offsetTop - 70; // Account for fixed navbar
+                const offsetTop = targetSection.offsetTop - 80; // Account for fixed navbar with extra padding
                 window.scrollTo({
                     top: offsetTop,
                     behavior: 'smooth'
