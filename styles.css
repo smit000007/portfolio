@@ -151,6 +151,19 @@ html, body {
     transition: 0.3s;
 }
 
+/* Hamburger Animation */
+.hamburger.active .bar:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.active .bar:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.hamburger.active .bar:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
 /* Global Cyberpunk Background */
 body {
     font-family: 'JetBrains Mono', monospace;
@@ -184,6 +197,7 @@ body::before {
     overflow: hidden;
     width: 100%;
     max-width: 100vw;
+    padding-top: 70px; /* Account for fixed navbar */
 }
 
 .cyberpunk-canvas {
@@ -244,6 +258,40 @@ body::before {
     transition: all 0.3s ease;
     position: relative;
     z-index: 2;
+    background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+}
+
+.profile-photo-container::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    right: -8px;
+    bottom: -8px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, var(--accent-green), var(--accent-blue), var(--accent-cyan), var(--accent-green));
+    background-size: 400% 400%;
+    z-index: 1;
+    opacity: 0.7;
+    animation: gradientShift 3s ease infinite;
+}
+
+.profile-photo-container::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    background: linear-gradient(45deg, var(--accent-green), var(--accent-blue)) border-box;
+    -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: destination-out;
+    mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    z-index: 3;
+    opacity: 0.8;
 }
 
 .profile-photo::before {
@@ -369,6 +417,18 @@ body::before {
     }
     100% {
         transform: rotate(360deg);
+    }
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
     }
 }
 
@@ -2086,6 +2146,41 @@ body::before {
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
+    /* Mobile Navigation */
+    .hamburger {
+        display: flex;
+    }
+    
+    .nav-menu {
+        position: fixed;
+        left: -100%;
+        top: 70px;
+        flex-direction: column;
+        background: linear-gradient(135deg, rgba(10, 10, 10, 0.98) 0%, rgba(26, 26, 46, 0.98) 100%);
+        width: 100%;
+        text-align: center;
+        transition: 0.3s;
+        box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
+        backdrop-filter: blur(15px);
+        border-bottom: 1px solid var(--border-color);
+        padding: 2rem 0;
+        gap: 1.5rem;
+    }
+    
+    .nav-menu.active {
+        left: 0;
+    }
+    
+    .nav-link {
+        font-size: 1.1rem;
+        padding: 0.5rem 0;
+    }
+    
+    /* Hero Section Mobile Adjustments */
+    .hero {
+        padding-top: 80px; /* Slightly more padding for mobile */
+    }
+    
     .contact-container {
         grid-template-columns: 1fr;
         gap: 2rem;
@@ -2118,6 +2213,11 @@ body::before {
 }
 
 @media (max-width: 480px) {
+    /* Hero Section Small Mobile Adjustments */
+    .hero {
+        padding-top: 90px; /* Even more padding for very small screens */
+    }
+    
     .contact {
         padding: 60px 0;
     }
