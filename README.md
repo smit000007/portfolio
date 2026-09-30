@@ -1,4 +1,4 @@
-# Smit Malaviya - Hacker-Style Portfolio Website
+# Smit Malaviya -  Portfolio Website
 
 A professional, responsive portfolio website with a cybersecurity/hacker aesthetic featuring dark theme, neon accents, and interactive animations.
 
