@@ -227,11 +227,9 @@ function initCyberpunkBackground() {
         
         getRandomCode() {
             const codes = [
-                '0x1F4A9', '0xDEAD', '0xBEEF', '0xCAFE',
-                'sudo rm -rf /', 'git commit -m "fix"',
-                'SELECT * FROM users', 'npm install',
-                'docker run', 'kubectl apply',
-                'ssh root@', 'ping 8.8.8.8'
+                'B2B Pipeline', 'CRM Sync', 'VAPT Audit', 'Lead Qualified',
+                'OWASP Top 10', 'Burp Suite', 'LinkedIn Outreach', 'CEH Certified',
+                'Client Retention', 'Nmap Recon', 'Pitch Deck Ready', 'Metasploit'
             ];
             return codes[Math.floor(Math.random() * codes.length)];
         }
@@ -304,7 +302,15 @@ function initCyberpunkBackground() {
 // Typing Animation
 function initTypingAnimation() {
     const typingElement = document.getElementById('typing-animation');
-    const words = ['Pentesting', 'AI Security', 'Blockchain', 'Threat Analysis', 'Smart Contracts', 'Adversarial ML'];
+    const words = [
+        'B2B Business Development',
+        'Cybersecurity Sales & Consulting',
+        'Client Relationship Management (CRM)',
+        'Vulnerability Assessment (VAPT)',
+        'Technical Proposal & Pitch Support',
+        'Lead Qualification & Prospecting',
+        'Penetration Testing & Ethical Hacking'
+    ];
     let wordIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
@@ -341,18 +347,20 @@ function initTypingAnimation() {
 // Counter Animation
 function initCounterAnimation() {
     const counters = document.querySelectorAll('.stat-number');
-    const speed = 200;
+    const speed = 100;
 
     const animateCounter = (counter) => {
-        const target = parseInt(counter.getAttribute('data-target'));
-        const count = parseInt(counter.innerText);
-        const increment = target / speed;
+        const target = parseInt(counter.getAttribute('data-target')) || 0;
+        const suffix = counter.getAttribute('data-suffix') || '';
+        const currentText = counter.innerText.replace(/[^0-9]/g, '');
+        const count = parseInt(currentText) || 0;
+        const increment = Math.max(1, Math.ceil(target / speed));
 
         if (count < target) {
-            counter.innerText = Math.ceil(count + increment);
-            setTimeout(() => animateCounter(counter), 1);
+            counter.innerText = Math.min(target, count + increment) + suffix;
+            setTimeout(() => animateCounter(counter), 18);
         } else {
-            counter.innerText = target;
+            counter.innerText = target + suffix;
         }
     };
 
@@ -434,7 +442,7 @@ function initScrollAnimations() {
     }, observerOptions);
 
     // Observe all sections and cards
-    const animatedElements = document.querySelectorAll('.skill-card, .project-card, .certification-card, .badge-card, .stat-card, .connect-category');
+    const animatedElements = document.querySelectorAll('.pillar-card, .timeline-card, .skill-card, .project-card, .certification-card, .badge-card, .stat-card, .connect-category');
     animatedElements.forEach(el => observer.observe(el));
 }
 
@@ -834,12 +842,12 @@ function initFormHandling() {
 
 // Project Filters
 function initProjectFilters() {
-    const filterButtons = document.querySelectorAll('[data-category]');
+    const filterButtons = document.querySelectorAll('.filter-btn[data-filter]');
     const projectCards = document.querySelectorAll('.project-card');
     
     filterButtons.forEach(button => {
         button.addEventListener('click', () => {
-            const category = button.getAttribute('data-category');
+            const category = button.getAttribute('data-filter');
             
             // Update active button
             filterButtons.forEach(btn => btn.classList.remove('active'));
@@ -850,6 +858,8 @@ function initProjectFilters() {
                 const cardCategory = card.getAttribute('data-category');
                 if (category === 'all' || cardCategory === category) {
                     card.style.display = 'block';
+                    card.classList.remove('fade-in-up');
+                    void card.offsetWidth; // trigger reflow for animation
                     card.classList.add('fade-in-up');
                 } else {
                     card.style.display = 'none';
@@ -857,12 +867,26 @@ function initProjectFilters() {
             });
         });
     });
+
+    // Contact Form Subject Quick Chips
+    const subjectChips = document.querySelectorAll('.subject-chip');
+    const subjectInput = document.getElementById('subject');
+    if (subjectChips.length && subjectInput) {
+        subjectChips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                subjectInput.value = chip.getAttribute('data-subject') || '';
+                subjectInput.dispatchEvent(new Event('input'));
+                subjectInput.focus();
+            });
+        });
+    }
 }
 
 // Professional Terminal Functionality
 function initTerminalEffects() {
     const terminalOutput = document.getElementById('terminal-output');
     const terminalInput = document.getElementById('terminal-input');
+    const quickCmdButtons = document.querySelectorAll('.quick-cmd-btn');
     
     if (!terminalOutput || !terminalInput) return;
     
@@ -890,11 +914,63 @@ function initTerminalEffects() {
         
         switch(cmd) {
             case 'about':
-                addOutputLine('about', `
+            case 'whoami':
+                addOutputLine(cmd, `
                     <div class="profile-info">
                         <h3>Smit Malaviya</h3>
-                        <p class="title">Cybersecurity Specialist & Ethical Hacker</p>
-                        <p class="description">Passionate about protecting digital assets and securing systems. Specialized in penetration testing, vulnerability assessment, and security architecture. I focus on identifying and mitigating security risks while helping organizations build robust defense mechanisms.</p>
+                        <p class="title">Business Development | Sales | Client Relationship | Cybersecurity (CEH)</p>
+                        <p class="description">Business development and client-focused professional with a technical cybersecurity background and hands-on industry experience at CyberTech Shield LLC. Strong foundation in client communication, business research, prospecting, relationship building, market research, digital outreach, presentation, and technical solution understanding. Able to translate technical cybersecurity concepts (VAPT, network security, OWASP Top 10) into clear business value for prospects and clients.</p>
+                    </div>
+                `);
+                break;
+            case 'bd':
+            case 'bd-skills':
+                addOutputLine(cmd, `
+                    <div class="skills-grid">
+                        <div class="skill-category">
+                            <h4>📈 Business Development &amp; Sales</h4>
+                            <div class="skill-tags">
+                                <span class="skill-tag">Business Development &amp; Sales Support</span>
+                                <span class="skill-tag">Client Relationship Management (CRM)</span>
+                                <span class="skill-tag">Lead Qualification &amp; Follow-Up</span>
+                                <span class="skill-tag">Customer Acquisition &amp; Retention</span>
+                                <span class="skill-tag">Proposal &amp; Pitch Support</span>
+                                <span class="skill-tag">Account Management</span>
+                                <span class="skill-tag">LinkedIn Prospecting &amp; Email Outreach</span>
+                                <span class="skill-tag">Market &amp; Industry Research</span>
+                                <span class="skill-tag">Digital Marketing &amp; Social Outreach</span>
+                            </div>
+                        </div>
+                    </div>
+                `);
+                break;
+            case 'cyber':
+            case 'cyber-skills':
+                addOutputLine(cmd, `
+                    <div class="skills-grid">
+                        <div class="skill-category">
+                            <h4>🛡️ Cybersecurity &amp; Technical Consulting</h4>
+                            <div class="skill-tags">
+                                <span class="skill-tag">Vulnerability Assessment (VAPT)</span>
+                                <span class="skill-tag">Penetration Testing</span>
+                                <span class="skill-tag">Ethical Hacking (CEH)</span>
+                                <span class="skill-tag">Network Security</span>
+                                <span class="skill-tag">Web App Security (OWASP Top 10)</span>
+                                <span class="skill-tag">Malware Detection &amp; Analysis</span>
+                            </div>
+                        </div>
+                        <div class="skill-category">
+                            <h4>🧰 Security Tools &amp; Programming</h4>
+                            <div class="skill-tags">
+                                <span class="skill-tag">Metasploit</span>
+                                <span class="skill-tag">Burp Suite</span>
+                                <span class="skill-tag">Nmap</span>
+                                <span class="skill-tag">Kali Linux</span>
+                                <span class="skill-tag">Wireshark</span>
+                                <span class="skill-tag">Python</span>
+                                <span class="skill-tag">C / Java / Bash</span>
+                            </div>
+                        </div>
                     </div>
                 `);
                 break;
@@ -902,45 +978,26 @@ function initTerminalEffects() {
                 addOutputLine('skills', `
                     <div class="skills-grid">
                         <div class="skill-category">
-                            <h4>🔒 Security Tools</h4>
+                            <h4>📈 Business &amp; Client Growth</h4>
                             <div class="skill-tags">
-                                <span class="skill-tag">Nmap</span>
-                                <span class="skill-tag">Wireshark</span>
+                                <span class="skill-tag">B2B Sales Support</span>
+                                <span class="skill-tag">CRM</span>
+                                <span class="skill-tag">Lead Qualification</span>
+                                <span class="skill-tag">LinkedIn Prospecting</span>
+                                <span class="skill-tag">Proposal &amp; Pitching</span>
+                                <span class="skill-tag">Account Coordination</span>
+                            </div>
+                        </div>
+                        <div class="skill-category">
+                            <h4>🔒 Cybersecurity &amp; VAPT</h4>
+                            <div class="skill-tags">
+                                <span class="skill-tag">CEH Certified</span>
+                                <span class="skill-tag">VAPT</span>
+                                <span class="skill-tag">OWASP Top 10</span>
                                 <span class="skill-tag">Metasploit</span>
                                 <span class="skill-tag">Burp Suite</span>
-                                <span class="skill-tag">OWASP ZAP</span>
-                                <span class="skill-tag">Kali Linux</span>
-                            </div>
-                        </div>
-                        <div class="skill-category">
-                            <h4>🛡️ Security Domains</h4>
-                            <div class="skill-tags">
-                                <span class="skill-tag">Network Security</span>
-                                <span class="skill-tag">Web App Security</span>
-                                <span class="skill-tag">Mobile Security</span>
-                                <span class="skill-tag">Cloud Security</span>
-                                <span class="skill-tag">Incident Response</span>
-                            </div>
-                        </div>
-                        <div class="skill-category">
-                            <h4>💻 Technical Skills</h4>
-                            <div class="skill-tags">
-                                <span class="skill-tag">Python</span>
-                                <span class="skill-tag">Bash Scripting</span>
-                                <span class="skill-tag">SQL Injection</span>
-                                <span class="skill-tag">XSS</span>
-                                <span class="skill-tag">Cryptography</span>
-                                <span class="skill-tag">Forensics</span>
-                            </div>
-                        </div>
-                        <div class="skill-category">
-                            <h4>📋 Certifications</h4>
-                            <div class="skill-tags">
-                                <span class="skill-tag">CompTIA Security+</span>
-                                <span class="skill-tag">CEH</span>
-                                <span class="skill-tag">CISSP</span>
-                                <span class="skill-tag">OSCP</span>
-                                <span class="skill-tag">Bug Bounty</span>
+                                <span class="skill-tag">Nmap</span>
+                                <span class="skill-tag">Wireshark</span>
                             </div>
                         </div>
                     </div>
@@ -951,27 +1008,33 @@ function initTerminalEffects() {
                     <div class="experience-list">
                         <div class="experience-item">
                             <div class="exp-header">
-                                <span class="exp-title">Security Analyst</span>
-                                <span class="exp-period">2023 - Present</span>
+                                <span class="exp-title">Cyber Security (VAPT) Intern</span>
+                                <span class="exp-period">Aug 2026 – Present</span>
                             </div>
-                            <p class="exp-company">CyberDefense Corp</p>
-                            <p class="exp-description">Conducted vulnerability assessments on enterprise networks. Performed penetration testing on web applications. Developed security policies and procedures. Responded to security incidents and threats.</p>
+                            <p class="exp-company">CyberTech Shield LLC | Full-time | Vadodara, Gujarat, India (On-site)</p>
+                            <p class="exp-description">• Support cybersecurity-related business and client-facing activities by understanding security requirements and communicating technical concepts clearly.<br>• Research organizations, industries, prospects, and cybersecurity requirements to support business development and outreach.<br>• Develop professional communication and service-oriented messaging for VAPT, network security, and web app security solutions.<br>• Utilize Metasploit, Burp Suite, Nmap, Kali Linux, and Wireshark to enable stronger technical conversations with prospects.</p>
+                        </div>
+                    </div>
+                `);
+                break;
+            case 'education':
+                addOutputLine('education', `
+                    <div class="experience-list">
+                        <div class="experience-item">
+                            <div class="exp-header">
+                                <span class="exp-title">B.Tech — Computer Science (Cybersecurity)</span>
+                                <span class="exp-period">2023 – 2027</span>
+                            </div>
+                            <p class="exp-company">Parul University</p>
+                            <p class="exp-description">Specialization in Cybersecurity, Network Defense, Ethical Hacking, and Enterprise Security Solutions.</p>
                         </div>
                         <div class="experience-item">
                             <div class="exp-header">
-                                <span class="exp-title">Junior Penetration Tester</span>
-                                <span class="exp-period">2022 - 2023</span>
+                                <span class="exp-title">Higher Secondary (Science Stream)</span>
+                                <span class="exp-period">2020 – 2023</span>
                             </div>
-                            <p class="exp-company">SecureNet Solutions</p>
-                            <p class="exp-description">Executed security audits for client systems. Identified and documented security vulnerabilities. Created detailed security assessment reports. Assisted in security awareness training.</p>
-                        </div>
-                        <div class="experience-item">
-                            <div class="exp-header">
-                                <span class="exp-title">Security Researcher</span>
-                                <span class="exp-period">2021 - Present</span>
-                            </div>
-                            <p class="exp-company">Independent</p>
-                            <p class="exp-description">Participated in bug bounty programs. Researched emerging security threats. Contributed to open-source security tools. Published security advisories and findings.</p>
+                            <p class="exp-company">Sanskartirth Gyanpeeth (70%)</p>
+                            <p class="exp-description">Languages: Gujarati (Native) | Hindi (Fluent) | English (Proficient)</p>
                         </div>
                     </div>
                 `);
@@ -979,11 +1042,12 @@ function initTerminalEffects() {
             case 'contact':
                 addOutputLine('contact', `
                     <div class="contact-info">
-                        <p><strong>Email:</strong> smitmalaviya2006@gmail.com</p>
-                        <p><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/smit-malaviya-164185228/" target="_blank">/smitmalaviya</a></p>
-                        <p><strong>GitHub:</strong> <a href="https://github.com/smitmalaviya" target="_blank">/smitmalaviya</a></p>
-                        <p><strong>Location:</strong> India</p>
-                        <p><strong>Availability:</strong> Open to new opportunities</p>
+                        <p><strong>Phone:</strong> <a href="tel:+919427974107">+91-9427974107</a></p>
+                        <p><strong>Email:</strong> <a href="mailto:smitmalaviya30@gmail.com">smitmalaviya30@gmail.com</a></p>
+                        <p><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/smit-malaviya-164185228/" target="_blank">linkedin.com/in/smit-malaviya</a></p>
+                        <p><strong>GitHub:</strong> <a href="https://github.com/smit000007" target="_blank">github.com/smit000007</a></p>
+                        <p><strong>Location:</strong> Surat / Vadodara, Gujarat, India</p>
+                        <p><strong>Availability:</strong> Open to Business Development, Sales &amp; Cybersecurity Roles</p>
                     </div>
                 `);
                 break;
@@ -991,12 +1055,12 @@ function initTerminalEffects() {
                 addOutputLine('resume', `
                     <div class="resume-info">
                         <p>Opening resume in new tab...</p>
-                        <p><a href="assets/resume/smit-malaviya-resume.pdf" target="_blank" class="resume-link">📄 Download Resume</a></p>
+                        <p><a href="assets/resume/smit-malaviya-resume.pdf" target="_blank" class="resume-link">📄 Preview / Download Smit Malaviya Resume (PDF)</a></p>
                     </div>
                 `);
                 setTimeout(() => {
                     window.open('assets/resume/smit-malaviya-resume.pdf', '_blank');
-                }, 1000);
+                }, 800);
                 break;
             case 'clear':
                 terminalOutput.innerHTML = '';
@@ -1004,27 +1068,35 @@ function initTerminalEffects() {
             case 'help':
                 addOutputLine('help', `
                     <div class="help-menu">
-                        <h4>Available Commands:</h4>
+                        <h4>Available Console Commands:</h4>
                         <div class="command-list">
                             <div class="command-item">
                                 <span class="cmd-name">about</span>
-                                <span class="cmd-desc">- View detailed information about me</span>
+                                <span class="cmd-desc">- Executive summary &amp; hybrid BD + Cyber value</span>
                             </div>
                             <div class="command-item">
-                                <span class="cmd-name">skills</span>
-                                <span class="cmd-desc">- Display technical skills and expertise</span>
+                                <span class="cmd-name">bd</span>
+                                <span class="cmd-desc">- Business Development, Sales &amp; CRM skills</span>
+                            </div>
+                            <div class="command-item">
+                                <span class="cmd-name">cyber</span>
+                                <span class="cmd-desc">- Cybersecurity, VAPT &amp; Ethical Hacking skills</span>
                             </div>
                             <div class="command-item">
                                 <span class="cmd-name">experience</span>
-                                <span class="cmd-desc">- Show work experience and projects</span>
+                                <span class="cmd-desc">- Professional work experience at CyberTech Shield LLC</span>
+                            </div>
+                            <div class="command-item">
+                                <span class="cmd-name">education</span>
+                                <span class="cmd-desc">- B.Tech degree &amp; language proficiencies</span>
                             </div>
                             <div class="command-item">
                                 <span class="cmd-name">contact</span>
-                                <span class="cmd-desc">- Get contact information</span>
+                                <span class="cmd-desc">- Phone, Email &amp; LinkedIn contact info</span>
                             </div>
                             <div class="command-item">
                                 <span class="cmd-name">resume</span>
-                                <span class="cmd-desc">- Download my resume</span>
+                                <span class="cmd-desc">- Preview or download resume PDF</span>
                             </div>
                             <div class="command-item">
                                 <span class="cmd-name">clear</span>
@@ -1037,9 +1109,9 @@ function initTerminalEffects() {
             default:
                 if (command.trim()) {
                     addOutputLine(command, `
-                        <div class="error-message">
+                        <div class="error-message" style="opacity:1;">
                             Command not found: ${command}<br>
-                            Type 'help' for available commands.
+                            Type 'help' or click a Quick Command chip above.
                         </div>
                     `);
                 }
@@ -1059,6 +1131,18 @@ function initTerminalEffects() {
         // Focus on input when terminal is clicked
         terminalOutput.addEventListener('click', () => {
             terminalInput.focus();
+        });
+    }
+
+    // Hook up Quick Command buttons
+    if (quickCmdButtons.length) {
+        quickCmdButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const cmd = btn.getAttribute('data-cmd');
+                if (cmd) {
+                    processCommand(cmd);
+                }
+            });
         });
     }
     
