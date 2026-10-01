@@ -1,402 +1,203 @@
-// DOM Content Loaded
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize all features with performance optimization
-    initGlobalBackground();
-    initCyberpunkBackground();
-    initTypingAnimation();
-    initCounterAnimation();
+/**
+ * SMIT MALAVIYA — EXECUTIVE PORTFOLIO
+ * Business Development & Technical Cybersecurity
+ * Interactive JavaScript Engine
+ */
+
+document.addEventListener('DOMContentLoaded', () => {
+    initHeroNetworkCanvas();
+    initNavbarScroll();
     initMobileNavigation();
     initSmoothScrolling();
+    initTypingAnimation();
+    initCounterAnimation();
     initScrollAnimations();
-    initFormHandling();
     initProjectFilters();
-    initTerminalEffects();
-    initPerformanceOptimizations();
+    initTerminalConsole();
+    initFormHandling();
 });
 
-// Global Background Animation (Optimized)
-function initGlobalBackground() {
-    const canvas = document.createElement('canvas');
-    canvas.id = 'global-bg';
-    canvas.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -3;
-        opacity: 0.1;
-        pointer-events: none;
-    `;
-    document.body.appendChild(canvas);
-    
+/* --------------------------------------------------------------------------
+   1. Subtle Enterprise Constellation Network Background (Canvas)
+   -------------------------------------------------------------------------- */
+function initHeroNetworkCanvas() {
+    const canvas = document.getElementById('cyberpunk-bg');
+    if (!canvas) return;
+
     const ctx = canvas.getContext('2d');
-    let animationId;
-    
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-    
-    resizeCanvas();
-    window.addEventListener('resize', debounce(resizeCanvas, 250));
-    
-    // Simplified particle system for global background
+    let animationFrameId;
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+
+    const onResize = () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    };
+    window.addEventListener('resize', debounce(onResize, 200));
+
+    // Interactive mouse position for subtle parallax
+    const mouse = { x: null, y: null, radius: 140 };
+    window.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+    });
+    window.addEventListener('mouseleave', () => {
+        mouse.x = null;
+        mouse.y = null;
+    });
+
+    // Particle nodes definition
+    const particleCount = Math.min(65, Math.floor((width * height) / 18000));
     const particles = [];
-    const maxParticles = Math.min(50, Math.floor((canvas.width * canvas.height) / 20000));
-    
-    class GlobalParticle {
+
+    class NetworkNode {
         constructor() {
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height;
-            this.vx = (Math.random() - 0.5) * 0.3;
-            this.vy = (Math.random() - 0.5) * 0.3;
-            this.size = Math.random() * 1.5 + 0.5;
-            this.opacity = Math.random() * 0.3 + 0.1;
+            this.x = Math.random() * width;
+            this.y = Math.random() * height;
+            this.vx = (Math.random() - 0.5) * 0.45;
+            this.vy = (Math.random() - 0.5) * 0.45;
+            this.radius = Math.random() * 1.8 + 1.2;
+            // Alternating corporate cobalt & emerald hues
+            this.isBlue = Math.random() > 0.4;
+            this.baseColor = this.isBlue ? 'rgba(59, 130, 246,' : 'rgba(16, 185, 129,';
+            this.baseAlpha = Math.random() * 0.4 + 0.2;
         }
-        
+
         update() {
             this.x += this.vx;
             this.y += this.vy;
-            
-            if (this.x <= 0 || this.x >= canvas.width) this.vx *= -1;
-            if (this.y <= 0 || this.y >= canvas.height) this.vy *= -1;
+
+            if (this.x < 0 || this.x > width) this.vx *= -1;
+            if (this.y < 0 || this.y > height) this.vy *= -1;
+
+            // Soft push when hovering near mouse
+            if (mouse.x !== null && mouse.y !== null) {
+                const dx = this.x - mouse.x;
+                const dy = this.y - mouse.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < mouse.radius) {
+                    const force = (mouse.radius - dist) / mouse.radius;
+                    const angle = Math.atan2(dy, dx);
+                    this.x += Math.cos(angle) * force * 1.5;
+                    this.y += Math.sin(angle) * force * 1.5;
+                }
+            }
         }
-        
+
         draw() {
             ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(0, 255, 65, ${this.opacity})`;
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = `${this.baseColor} ${this.baseAlpha})`;
             ctx.fill();
         }
     }
-    
-    // Create particles
-    for (let i = 0; i < maxParticles; i++) {
-        particles.push(new GlobalParticle());
+
+    for (let i = 0; i < particleCount; i++) {
+        particles.push(new NetworkNode());
     }
-    
+
     function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        particles.forEach(particle => {
-            particle.update();
-            particle.draw();
-        });
-        
-        // Draw connections (optimized)
+        ctx.clearRect(0, 0, width, height);
+
+        // Update and draw nodes
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].draw();
+        }
+
+        // Draw connections between nearby nodes
+        const maxDist = 130;
         for (let i = 0; i < particles.length; i++) {
             for (let j = i + 1; j < particles.length; j++) {
-                const distance = Math.sqrt(
-                    Math.pow(particles[i].x - particles[j].x, 2) + 
-                    Math.pow(particles[i].y - particles[j].y, 2)
-                );
-                
-                if (distance < 150) {
-                    const opacity = (150 - distance) / 150 * 0.2;
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist < maxDist) {
+                    const alpha = (1 - dist / maxDist) * 0.18;
                     ctx.beginPath();
                     ctx.moveTo(particles[i].x, particles[i].y);
                     ctx.lineTo(particles[j].x, particles[j].y);
-                    ctx.strokeStyle = `rgba(0, 255, 65, ${opacity})`;
-                    ctx.lineWidth = 1;
+                    ctx.strokeStyle = `rgba(59, 130, 246, ${alpha})`;
+                    ctx.lineWidth = 0.8;
                     ctx.stroke();
                 }
             }
         }
-        
-        animationId = requestAnimationFrame(animate);
+
+        animationFrameId = requestAnimationFrame(animate);
     }
-    
+
     animate();
-    
-    // Pause animation when tab is not visible
+
     document.addEventListener('visibilitychange', () => {
         if (document.hidden) {
-            cancelAnimationFrame(animationId);
+            cancelAnimationFrame(animationFrameId);
         } else {
             animate();
         }
     });
 }
 
-// Cyberpunk Background Animation
-function initCyberpunkBackground() {
-    const canvas = document.getElementById('cyberpunk-bg');
-    const ctx = canvas.getContext('2d');
-    
-    // Set canvas size
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-    
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-    
-    // Particle system
-    class Particle {
-        constructor(x, y) {
-            this.x = x;
-            this.y = y;
-            this.vx = (Math.random() - 0.5) * 0.5;
-            this.vy = (Math.random() - 0.5) * 0.5;
-            this.size = Math.random() * 2 + 1;
-            this.opacity = Math.random() * 0.5 + 0.2;
-            this.connections = [];
-        }
-        
-        update() {
-            this.x += this.vx;
-            this.y += this.vy;
-            
-            // Bounce off edges
-            if (this.x <= 0 || this.x >= canvas.width) this.vx *= -1;
-            if (this.y <= 0 || this.y >= canvas.height) this.vy *= -1;
-        }
-        
-        draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(0, 255, 65, ${this.opacity})`;
-            ctx.fill();
-        }
-    }
-    
-    // Create particles
-    const particles = [];
-    const particleCount = Math.min(100, Math.floor((canvas.width * canvas.height) / 10000));
-    
-    for (let i = 0; i < particleCount; i++) {
-        particles.push(new Particle(
-            Math.random() * canvas.width,
-            Math.random() * canvas.height
-        ));
-    }
-    
-    // Hex grid
-    class HexGrid {
-        constructor() {
-            this.hexSize = 40;
-            this.hexes = [];
-            this.createHexes();
-        }
-        
-        createHexes() {
-            const cols = Math.ceil(canvas.width / (this.hexSize * 1.5));
-            const rows = Math.ceil(canvas.height / (this.hexSize * Math.sqrt(3)));
-            
-            for (let row = 0; row < rows; row++) {
-                for (let col = 0; col < cols; col++) {
-                    const x = col * this.hexSize * 1.5;
-                    const y = row * this.hexSize * Math.sqrt(3) + (col % 2) * this.hexSize * Math.sqrt(3) / 2;
-                    this.hexes.push({ x, y, opacity: Math.random() * 0.1 + 0.05 });
-                }
-            }
-        }
-        
-        draw() {
-            this.hexes.forEach(hex => {
-                ctx.beginPath();
-                for (let i = 0; i < 6; i++) {
-                    const angle = i * Math.PI / 3;
-                    const x = hex.x + this.hexSize * Math.cos(angle);
-                    const y = hex.y + this.hexSize * Math.sin(angle);
-                    if (i === 0) ctx.moveTo(x, y);
-                    else ctx.lineTo(x, y);
-                }
-                ctx.closePath();
-                ctx.strokeStyle = `rgba(0, 212, 255, ${hex.opacity})`;
-                ctx.lineWidth = 1;
-                ctx.stroke();
-            });
-        }
-    }
-    
-    const hexGrid = new HexGrid();
-    
-    // Floating code snippets
-    class CodeSnippet {
-        constructor() {
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height;
-            this.text = this.getRandomCode();
-            this.opacity = Math.random() * 0.3 + 0.1;
-            this.vx = (Math.random() - 0.5) * 0.3;
-            this.vy = (Math.random() - 0.5) * 0.3;
-        }
-        
-        getRandomCode() {
-            const codes = [
-                'B2B Pipeline', 'CRM Sync', 'VAPT Audit', 'Lead Qualified',
-                'OWASP Top 10', 'Burp Suite', 'LinkedIn Outreach', 'CEH Certified',
-                'Client Retention', 'Nmap Recon', 'Pitch Deck Ready', 'Metasploit'
-            ];
-            return codes[Math.floor(Math.random() * codes.length)];
-        }
-        
-        update() {
-            this.x += this.vx;
-            this.y += this.vy;
-            
-            if (this.x <= 0 || this.x >= canvas.width) this.vx *= -1;
-            if (this.y <= 0 || this.y >= canvas.height) this.vy *= -1;
-        }
-        
-        draw() {
-            ctx.font = '12px JetBrains Mono';
-            ctx.fillStyle = `rgba(0, 255, 65, ${this.opacity})`;
-            ctx.fillText(this.text, this.x, this.y);
-        }
-    }
-    
-    const codeSnippets = [];
-    for (let i = 0; i < 8; i++) {
-        codeSnippets.push(new CodeSnippet());
-    }
-    
-    // Animation loop
-    function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        // Draw hex grid
-        hexGrid.draw();
-        
-        // Update and draw particles
-        particles.forEach(particle => {
-            particle.update();
-            particle.draw();
-        });
-        
-        // Draw connections between nearby particles
-        particles.forEach((particle, i) => {
-            particles.slice(i + 1).forEach(otherParticle => {
-                const distance = Math.sqrt(
-                    Math.pow(particle.x - otherParticle.x, 2) + 
-                    Math.pow(particle.y - otherParticle.y, 2)
-                );
-                
-                if (distance < 100) {
-                    const opacity = (100 - distance) / 100 * 0.3;
-                    ctx.beginPath();
-                    ctx.moveTo(particle.x, particle.y);
-                    ctx.lineTo(otherParticle.x, otherParticle.y);
-                    ctx.strokeStyle = `rgba(0, 255, 65, ${opacity})`;
-                    ctx.lineWidth = 1;
-                    ctx.stroke();
-                }
-            });
-        });
-        
-        // Update and draw code snippets
-        codeSnippets.forEach(snippet => {
-            snippet.update();
-            snippet.draw();
-        });
-        
-        requestAnimationFrame(animate);
-    }
-    
-    animate();
-}
+/* --------------------------------------------------------------------------
+   2. Navbar Scroll Behavior & Active States
+   -------------------------------------------------------------------------- */
+function initNavbarScroll() {
+    const navbar = document.querySelector('.navbar');
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
 
-// Typing Animation
-function initTypingAnimation() {
-    const typingElement = document.getElementById('typing-animation');
-    const words = [
-        'B2B Business Development',
-        'Cybersecurity Sales & Consulting',
-        'Client Relationship Management (CRM)',
-        'Vulnerability Assessment (VAPT)',
-        'Technical Proposal & Pitch Support',
-        'Lead Qualification & Prospecting',
-        'Penetration Testing & Ethical Hacking'
-    ];
-    let wordIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
-    let typingSpeed = 100;
+    window.addEventListener('scroll', () => {
+        const scrollY = window.pageYOffset;
 
-    function type() {
-        const currentWord = words[wordIndex];
-        
-        if (isDeleting) {
-            typingElement.textContent = currentWord.substring(0, charIndex - 1);
-            charIndex--;
-            typingSpeed = 50;
+        // Navbar blur enhancement on scroll
+        if (scrollY > 30) {
+            navbar.classList.add('scrolled');
         } else {
-            typingElement.textContent = currentWord.substring(0, charIndex + 1);
-            charIndex++;
-            typingSpeed = 100;
+            navbar.classList.remove('scrolled');
         }
 
-        if (!isDeleting && charIndex === currentWord.length) {
-            typingSpeed = 2000; // Pause at end
-            isDeleting = true;
-        } else if (isDeleting && charIndex === 0) {
-            isDeleting = false;
-            wordIndex = (wordIndex + 1) % words.length;
-            typingSpeed = 500; // Pause before next word
-        }
-
-        setTimeout(type, typingSpeed);
-    }
-
-    type();
-}
-
-// Counter Animation
-function initCounterAnimation() {
-    const counters = document.querySelectorAll('.stat-number');
-    const speed = 100;
-
-    const animateCounter = (counter) => {
-        const target = parseInt(counter.getAttribute('data-target')) || 0;
-        const suffix = counter.getAttribute('data-suffix') || '';
-        const currentText = counter.innerText.replace(/[^0-9]/g, '');
-        const count = parseInt(currentText) || 0;
-        const increment = Math.max(1, Math.ceil(target / speed));
-
-        if (count < target) {
-            counter.innerText = Math.min(target, count + increment) + suffix;
-            setTimeout(() => animateCounter(counter), 18);
-        } else {
-            counter.innerText = target + suffix;
-        }
-    };
-
-    // Intersection Observer for counter animation
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const counter = entry.target;
-                animateCounter(counter);
-                observer.unobserve(counter);
+        // Active link indicator
+        let currentSectionId = '';
+        sections.forEach((section) => {
+            const sectionTop = section.offsetTop - 120;
+            const sectionHeight = section.offsetHeight;
+            if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                currentSectionId = section.getAttribute('id');
             }
         });
-    }, { threshold: 0.5 });
 
-    counters.forEach(counter => observer.observe(counter));
+        navLinks.forEach((link) => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${currentSectionId}`) {
+                link.classList.add('active');
+            }
+        });
+    }, { passive: true });
 }
 
-// Mobile Navigation
+/* --------------------------------------------------------------------------
+   3. Mobile Navigation Drawer
+   -------------------------------------------------------------------------- */
 function initMobileNavigation() {
-    const hamburger = document.querySelector('.hamburger');
+    const hamburger = document.getElementById('mobile-menu-toggle') || document.querySelector('.hamburger');
     const navMenu = document.querySelector('.nav-menu');
     const navLinks = document.querySelectorAll('.nav-link');
+
+    if (!hamburger || !navMenu) return;
 
     hamburger.addEventListener('click', () => {
         hamburger.classList.toggle('active');
         navMenu.classList.toggle('active');
     });
 
-    navLinks.forEach(link => {
+    navLinks.forEach((link) => {
         link.addEventListener('click', () => {
             hamburger.classList.remove('active');
             navMenu.classList.remove('active');
         });
     });
 
-    // Close menu when clicking outside
     document.addEventListener('click', (e) => {
         if (!hamburger.contains(e.target) && !navMenu.contains(e.target)) {
             hamburger.classList.remove('active');
@@ -405,20 +206,23 @@ function initMobileNavigation() {
     });
 }
 
-// Smooth Scrolling
+/* --------------------------------------------------------------------------
+   4. Smooth Scrolling
+   -------------------------------------------------------------------------- */
 function initSmoothScrolling() {
-    const navLinks = document.querySelectorAll('.nav-link');
-    
-    navLinks.forEach(link => {
+    const scrollLinks = document.querySelectorAll('a[href^="#"]');
+
+    scrollLinks.forEach((link) => {
         link.addEventListener('click', (e) => {
-            e.preventDefault();
             const targetId = link.getAttribute('href');
+            if (!targetId || targetId === '#') return;
+
             const targetSection = document.querySelector(targetId);
-            
             if (targetSection) {
-                const offsetTop = targetSection.offsetTop - 80; // Account for fixed navbar with extra padding
+                e.preventDefault();
+                const offset = targetSection.offsetTop - 75;
                 window.scrollTo({
-                    top: offsetTop,
+                    top: offset,
                     behavior: 'smooth'
                 });
             }
@@ -426,440 +230,128 @@ function initSmoothScrolling() {
     });
 }
 
-// Scroll Animations
-function initScrollAnimations() {
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
+/* --------------------------------------------------------------------------
+   5. Dynamic Typing Animation
+   -------------------------------------------------------------------------- */
+function initTypingAnimation() {
+    const typingElement = document.getElementById('typing-animation');
+    if (!typingElement) return;
 
+    const words = [
+        'B2B Business Development',
+        'Technical Cybersecurity Sales',
+        'Vulnerability Assessment (VAPT)',
+        'Strategic Client Relationships (CRM)',
+        'Technical Proposals & Deal Scoping',
+        'Ethical Hacking & Penetration Testing'
+    ];
+
+    let wordIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let typingSpeed = 90;
+
+    function type() {
+        const currentWord = words[wordIndex];
+
+        if (isDeleting) {
+            typingElement.textContent = currentWord.substring(0, charIndex - 1);
+            charIndex--;
+            typingSpeed = 45;
+        } else {
+            typingElement.textContent = currentWord.substring(0, charIndex + 1);
+            charIndex++;
+            typingSpeed = 85;
+        }
+
+        if (!isDeleting && charIndex === currentWord.length) {
+            typingSpeed = 2200; // Pause at end of word
+            isDeleting = true;
+        } else if (isDeleting && charIndex === 0) {
+            isDeleting = false;
+            wordIndex = (wordIndex + 1) % words.length;
+            typingSpeed = 400; // Pause before typing new word
+        }
+
+        setTimeout(type, typingSpeed);
+    }
+
+    type();
+}
+
+/* --------------------------------------------------------------------------
+   6. Key Metrics Counter Animation
+   -------------------------------------------------------------------------- */
+function initCounterAnimation() {
+    const counters = document.querySelectorAll('.stat-number');
+    if (!counters.length) return;
+
+    const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                const counter = entry.target;
+                const target = parseInt(counter.getAttribute('data-target'), 10) || 0;
+                const suffix = counter.getAttribute('data-suffix') || '';
+                let current = 0;
+                const duration = 1600;
+                const increment = Math.ceil(target / (duration / 25));
+
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        counter.textContent = `${target}${suffix}`;
+                        clearInterval(timer);
+                    } else {
+                        counter.textContent = `${current}${suffix}`;
+                    }
+                }, 25);
+
+                obs.unobserve(counter);
+            }
+        });
+    }, { threshold: 0.4 });
+
+    counters.forEach((c) => observer.observe(c));
+}
+
+/* --------------------------------------------------------------------------
+   7. Scroll Reveal Animations
+   -------------------------------------------------------------------------- */
+function initScrollAnimations() {
     const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
+        entries.forEach((entry) => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('fade-in-up');
             }
         });
-    }, observerOptions);
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
 
-    // Observe all sections and cards
-    const animatedElements = document.querySelectorAll('.pillar-card, .timeline-card, .skill-card, .project-card, .certification-card, .badge-card, .stat-card, .connect-category');
-    animatedElements.forEach(el => observer.observe(el));
+    const animatedElements = document.querySelectorAll(
+        '.pillar-card, .timeline-card, .skill-card, .project-card, .certification-card, .badge-card, .stat-card, .connect-category'
+    );
+    animatedElements.forEach((el) => observer.observe(el));
 }
 
-// Performance Optimizations
-function initPerformanceOptimizations() {
-    // Intersection Observer for lazy loading
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                img.classList.remove('lazy');
-                observer.unobserve(img);
-            }
-        });
-    });
-
-    // Lazy load images
-    document.querySelectorAll('img[data-src]').forEach(img => {
-        imageObserver.observe(img);
-    });
-
-    // Optimize scroll events
-    let ticking = false;
-    function updateScroll() {
-        // Add any scroll-based animations here
-        ticking = false;
-    }
-
-    function requestTick() {
-        if (!ticking) {
-            requestAnimationFrame(updateScroll);
-            ticking = true;
-        }
-    }
-
-    window.addEventListener('scroll', requestTick, { passive: true });
-
-    // Preload critical resources
-    const criticalResources = [
-        'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Orbitron:wght@400;700;900&display=swap',
-        'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'
-    ];
-
-    criticalResources.forEach(resource => {
-        const link = document.createElement('link');
-        link.rel = 'preload';
-        link.as = 'style';
-        link.href = resource;
-        document.head.appendChild(link);
-    });
-}
-
-// EmailJS Configuration and Form Handling
-let lastSubmissionTime = 0;
-const SUBMISSION_COOLDOWN = 30000; // 30 seconds between submissions
-
-function initFormHandling() {
-    // Initialize EmailJS with enhanced error handling
-    try {
-        // Check if EmailJS is loaded
-        if (typeof emailjs === 'undefined') {
-            console.error('EmailJS library not loaded');
-            showNotification('Email service not available. Please check your internet connection.', 'error');
-            return;
-        }
-        
-        emailjs.init("dQmrhnlupg0TUCIgL");
-        console.log('EmailJS initialized successfully with Public Key: dQmrhnlupg0TUCIgL');
-        
-        // Test EmailJS availability
-        if (emailjs.send) {
-            console.log('EmailJS send function is available');
-        } else {
-            console.error('EmailJS send function not available');
-        }
-    } catch (error) {
-        console.error('Failed to initialize EmailJS:', error);
-        showNotification('Email service initialization failed. Please refresh the page.', 'error');
-        return;
-    }
-    
-    const contactForm = document.getElementById('contact-form');
-    const testBtn = document.getElementById('test-btn');
-    
-    if (!contactForm) {
-        console.error('Contact form not found');
-        showNotification('Contact form not found. Please refresh the page.', 'error');
-        return;
-    }
-    
-    console.log('Contact form found and ready for handling');
-    
-    // Initialize form elements
-    const formElements = {
-        name: contactForm.querySelector('#name'),
-        email: contactForm.querySelector('#email'),
-        subject: contactForm.querySelector('#subject'),
-        message: contactForm.querySelector('#message'),
-        submitBtn: contactForm.querySelector('#submit-btn'),
-        charCount: contactForm.querySelector('#char-count')
-    };
-    
-    // Error message elements
-    const errorElements = {
-        name: contactForm.querySelector('#name-error'),
-        email: contactForm.querySelector('#email-error'),
-        subject: contactForm.querySelector('#subject-error'),
-        message: contactForm.querySelector('#message-error')
-    };
-    
-    // Add character counter functionality
-    if (formElements.message && formElements.charCount) {
-        formElements.message.addEventListener('input', () => {
-            const length = formElements.message.value.length;
-            formElements.charCount.textContent = length;
-            
-            // Change color based on length
-            if (length > 900) {
-                formElements.charCount.style.color = '#ff5f56';
-            } else if (length > 800) {
-                formElements.charCount.style.color = '#ffbd2e';
-            } else {
-                formElements.charCount.style.color = '#00d4ff';
-            }
-        });
-    }
-    
-    // Real-time validation
-    Object.keys(formElements).forEach(key => {
-        if (formElements[key] && formElements[key].tagName === 'INPUT' || formElements[key].tagName === 'TEXTAREA') {
-            formElements[key].addEventListener('blur', () => validateField(key, formElements[key].value));
-            formElements[key].addEventListener('input', () => clearFieldError(key));
-        }
-    });
-    
-    // Form submission handler
-    contactForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        console.log('Form submission started');
-        
-        // Rate limiting check
-        const now = Date.now();
-        if (now - lastSubmissionTime < SUBMISSION_COOLDOWN) {
-            const remainingTime = Math.ceil((SUBMISSION_COOLDOWN - (now - lastSubmissionTime)) / 1000);
-            showNotification(`Please wait ${remainingTime} seconds before sending another message`, 'warning');
-            return;
-        }
-        
-        // Validate all fields
-        const isValid = validateAllFields();
-        if (!isValid) {
-            showNotification('Please fix the errors in the form', 'error');
-            return;
-        }
-        
-        // Get form data
-        const formData = new FormData(contactForm);
-        const name = formData.get('name');
-        const email = formData.get('email');
-        const subject = formData.get('subject');
-        const message = formData.get('message');
-        
-        console.log('Form data collected:', { name, email, subject, message: message?.substring(0, 50) + '...' });
-        
-        // Trim whitespace
-        const trimmedName = name.trim();
-        const trimmedEmail = email.trim();
-        const trimmedSubject = subject.trim();
-        const trimmedMessage = message.trim();
-        
-        // Update button state
-        setSubmitButtonLoading(true);
-        
-        // Prepare template parameters
-        const templateParams = {
-            from_name: trimmedName,
-            from_email: trimmedEmail,
-            subject: trimmedSubject,
-            message: trimmedMessage,
-            to_name: 'Smit Malaviya',
-            reply_to: trimmedEmail
-        };
-        
-        console.log('Template parameters prepared:', templateParams);
-        console.log('Using Service ID: service_e38iyv4');
-        console.log('Using Template ID: template_3nyenng');
-        
-        // Send email using EmailJS with enhanced error handling
-        try {
-            emailjs.send(
-                'service_e38iyv4',
-                'template_3nyenng',
-                templateParams
-            )
-            .then(function(response) {
-                console.log('EmailJS SUCCESS!', response);
-                console.log('Status:', response.status);
-                console.log('Text:', response.text);
-                showNotification('Message sent successfully! I\'ll get back to you soon.', 'success');
-                contactForm.reset();
-                resetCharCounter();
-                setSubmitButtonLoading(false);
-                lastSubmissionTime = Date.now();
-            }, function(error) {
-                console.error('EmailJS FAILED!', error);
-                console.error('Error details:', {
-                    status: error.status,
-                    text: error.text,
-                    message: error.message,
-                    stack: error.stack
-                });
-                
-                let errorMessage = 'Failed to send message. Please try again or email me directly.';
-                
-                // Provide more specific error messages
-                if (error.status === 400) {
-                    errorMessage = 'Invalid request. Please check your EmailJS configuration.';
-                } else if (error.status === 401) {
-                    errorMessage = 'Authentication failed. Please check your EmailJS Public Key.';
-                } else if (error.status === 404) {
-                    errorMessage = 'Service or template not found. Please check your EmailJS Service ID and Template ID.';
-                } else if (error.status === 429) {
-                    errorMessage = 'Too many requests. Please wait a moment and try again.';
-                } else if (error.status >= 500) {
-                    errorMessage = 'Server error. Please try again later.';
-                }
-                
-                showNotification(errorMessage, 'error');
-                setSubmitButtonLoading(false);
-            });
-        } catch (sendError) {
-            console.error('Exception during emailjs.send:', sendError);
-            showNotification('Unexpected error occurred. Please try again.', 'error');
-            setSubmitButtonLoading(false);
-        }
-    });
-    
-    // Test button handler
-    if (testBtn) {
-        testBtn.addEventListener('click', testEmailJSConnection);
-    }
-    
-    // Helper functions
-    function validateField(fieldName, value) {
-        const trimmedValue = value.trim();
-        
-        switch (fieldName) {
-            case 'name':
-                if (!trimmedValue) {
-                    showFieldError('name', 'Name is required');
-                    return false;
-                }
-                if (trimmedValue.length < 2) {
-                    showFieldError('name', 'Name must be at least 2 characters');
-                    return false;
-                }
-                break;
-                
-            case 'email':
-                if (!trimmedValue) {
-                    showFieldError('email', 'Email is required');
-                    return false;
-                }
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(trimmedValue)) {
-                    showFieldError('email', 'Please enter a valid email address');
-                    return false;
-                }
-                break;
-                
-            case 'subject':
-                if (!trimmedValue) {
-                    showFieldError('subject', 'Subject is required');
-                    return false;
-                }
-                if (trimmedValue.length < 5) {
-                    showFieldError('subject', 'Subject must be at least 5 characters');
-                    return false;
-                }
-                break;
-                
-            case 'message':
-                if (!trimmedValue) {
-                    showFieldError('message', 'Message is required');
-                    return false;
-                }
-                if (trimmedValue.length < 10) {
-                    showFieldError('message', 'Message must be at least 10 characters');
-                    return false;
-                }
-                if (trimmedValue.length > 1000) {
-                    showFieldError('message', 'Message must be less than 1000 characters');
-                    return false;
-                }
-                break;
-        }
-        
-        clearFieldError(fieldName);
-        return true;
-    }
-    
-    function validateAllFields() {
-        let isValid = true;
-        
-        Object.keys(formElements).forEach(key => {
-            if (formElements[key] && (formElements[key].tagName === 'INPUT' || formElements[key].tagName === 'TEXTAREA')) {
-                if (!validateField(key, formElements[key].value)) {
-                    isValid = false;
-                }
-            }
-        });
-        
-        return isValid;
-    }
-    
-    function showFieldError(fieldName, message) {
-        if (errorElements[fieldName]) {
-            errorElements[fieldName].textContent = message;
-            errorElements[fieldName].classList.add('show');
-        }
-        
-        if (formElements[fieldName]) {
-            formElements[fieldName].style.borderColor = '#ff5f56';
-        }
-    }
-    
-    function clearFieldError(fieldName) {
-        if (errorElements[fieldName]) {
-            errorElements[fieldName].textContent = '';
-            errorElements[fieldName].classList.remove('show');
-        }
-        
-        if (formElements[fieldName]) {
-            formElements[fieldName].style.borderColor = '';
-        }
-    }
-    
-    function setSubmitButtonLoading(loading) {
-        if (formElements.submitBtn) {
-            if (loading) {
-                formElements.submitBtn.classList.add('loading');
-                formElements.submitBtn.disabled = true;
-            } else {
-                formElements.submitBtn.classList.remove('loading');
-                formElements.submitBtn.disabled = false;
-            }
-        }
-    }
-    
-    function resetCharCounter() {
-        if (formElements.charCount) {
-            formElements.charCount.textContent = '0';
-            formElements.charCount.style.color = '#00d4ff';
-        }
-    }
-    
-    // Enhanced test function for debugging
-    function testEmailJSConnection() {
-        console.log('=== EmailJS Connection Test ===');
-        console.log('EmailJS object available:', typeof emailjs !== 'undefined');
-        console.log('EmailJS send function available:', typeof emailjs.send === 'function');
-        console.log('Public Key:', 'dQmrhnlupg0TUCIgL');
-        console.log('Service ID:', 'service_e38iyv4');
-        console.log('Template ID:', 'template_3nyenng');
-        
-        const testParams = {
-            from_name: 'Test User',
-            from_email: 'test@example.com',
-            subject: 'Test Message',
-            message: 'This is a test message to verify EmailJS is working.',
-            to_name: 'Smit Malaviya',
-            reply_to: 'test@example.com'
-        };
-        
-        console.log('Sending test email with params:', testParams);
-        
-        // Show loading state on test button
-        const originalText = testBtn.innerHTML;
-        testBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Testing...';
-        testBtn.disabled = true;
-        
-        emailjs.send('service_e38iyv4', 'template_3nyenng', testParams)
-            .then(function(response) {
-                console.log('✅ EmailJS test successful:', response);
-                showNotification('EmailJS test successful! Check console for details.', 'success');
-                testBtn.innerHTML = originalText;
-                testBtn.disabled = false;
-            }, function(error) {
-                console.error('❌ EmailJS test failed:', error);
-                showNotification('EmailJS test failed! Check console for details.', 'error');
-                testBtn.innerHTML = originalText;
-                testBtn.disabled = false;
-            });
-    }
-}
-
-// Project Filters
+/* --------------------------------------------------------------------------
+   8. Project Category Filters & Subject Chips
+   -------------------------------------------------------------------------- */
 function initProjectFilters() {
     const filterButtons = document.querySelectorAll('.filter-btn[data-filter]');
     const projectCards = document.querySelectorAll('.project-card');
-    
-    filterButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const category = button.getAttribute('data-filter');
-            
-            // Update active button
-            filterButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-            
-            // Filter projects
-            projectCards.forEach(card => {
-                const cardCategory = card.getAttribute('data-category');
-                if (category === 'all' || cardCategory === category) {
-                    card.style.display = 'block';
+
+    filterButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const category = btn.getAttribute('data-filter');
+
+            filterButtons.forEach((b) => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            projectCards.forEach((card) => {
+                const cardCat = card.getAttribute('data-category');
+                if (category === 'all' || cardCat === category) {
+                    card.style.display = 'flex';
                     card.classList.remove('fade-in-up');
-                    void card.offsetWidth; // trigger reflow for animation
+                    void card.offsetWidth;
                     card.classList.add('fade-in-up');
                 } else {
                     card.style.display = 'none';
@@ -868,11 +360,11 @@ function initProjectFilters() {
         });
     });
 
-    // Contact Form Subject Quick Chips
+    // Subject Chips in Contact Form
     const subjectChips = document.querySelectorAll('.subject-chip');
     const subjectInput = document.getElementById('subject');
     if (subjectChips.length && subjectInput) {
-        subjectChips.forEach(chip => {
+        subjectChips.forEach((chip) => {
             chip.addEventListener('click', () => {
                 subjectInput.value = chip.getAttribute('data-subject') || '';
                 subjectInput.dispatchEvent(new Event('input'));
@@ -882,522 +374,390 @@ function initProjectFilters() {
     }
 }
 
-// Professional Terminal Functionality
-function initTerminalEffects() {
+/* --------------------------------------------------------------------------
+   9. Executive Terminal Console
+   -------------------------------------------------------------------------- */
+function initTerminalConsole() {
     const terminalOutput = document.getElementById('terminal-output');
     const terminalInput = document.getElementById('terminal-input');
     const quickCmdButtons = document.querySelectorAll('.quick-cmd-btn');
-    
+
     if (!terminalOutput || !terminalInput) return;
-    
-    function addOutputLine(command, output) {
-        const outputLine = document.createElement('div');
-        outputLine.className = 'output-line';
-        outputLine.innerHTML = `
+
+    function addOutputLine(command, htmlOutput) {
+        const cmdRow = document.createElement('div');
+        cmdRow.className = 'output-line';
+        cmdRow.innerHTML = `
             <span class="prompt">$</span>
-            <span class="command">${command}</span>
+            <span class="command">${escapeHtml(command)}</span>
         `;
-        terminalOutput.appendChild(outputLine);
-        
-        if (output) {
-            const outputContent = document.createElement('div');
-            outputContent.className = 'output-content';
-            outputContent.innerHTML = output;
-            terminalOutput.appendChild(outputContent);
+        terminalOutput.appendChild(cmdRow);
+
+        if (htmlOutput) {
+            const contentRow = document.createElement('div');
+            contentRow.className = 'output-content';
+            contentRow.innerHTML = htmlOutput;
+            terminalOutput.appendChild(contentRow);
         }
-        
+
         terminalOutput.scrollTop = terminalOutput.scrollHeight;
     }
-    
-    function processCommand(command) {
-        const cmd = command.toLowerCase().trim();
-        
-        switch(cmd) {
+
+    function processCommand(rawCommand) {
+        const cmd = rawCommand.toLowerCase().trim();
+
+        switch (cmd) {
             case 'about':
             case 'whoami':
                 addOutputLine(cmd, `
                     <div class="profile-info">
                         <h3>Smit Malaviya</h3>
-                        <p class="title">Business Development | Sales | Client Relationship | Cybersecurity (CEH)</p>
-                        <p class="description">Business development and client-focused professional with a technical cybersecurity background and hands-on industry experience at CyberTech Shield LLC. Strong foundation in client communication, business research, prospecting, relationship building, market research, digital outreach, presentation, and technical solution understanding. Able to translate technical cybersecurity concepts (VAPT, network security, OWASP Top 10) into clear business value for prospects and clients.</p>
+                        <p class="title">Business Development Specialist • Technical Sales • Cybersecurity (CEH)</p>
+                        <p class="description">Bridging deep technical cybersecurity acumen (VAPT, network defense, OWASP Top 10) with B2B prospecting, client acquisition, and executive deal scoping. Currently driving client engagement and security research at CyberTech Shield LLC.</p>
                     </div>
                 `);
                 break;
+
             case 'bd':
             case 'bd-skills':
                 addOutputLine(cmd, `
-                    <div class="skills-grid">
+                    <div class="skills-grid" style="grid-template-columns: 1fr;">
                         <div class="skill-category">
-                            <h4>📈 Business Development &amp; Sales</h4>
+                            <h4>📈 Business Development &amp; Technical Sales</h4>
                             <div class="skill-tags">
-                                <span class="skill-tag">Business Development &amp; Sales Support</span>
-                                <span class="skill-tag">Client Relationship Management (CRM)</span>
-                                <span class="skill-tag">Lead Qualification &amp; Follow-Up</span>
-                                <span class="skill-tag">Customer Acquisition &amp; Retention</span>
+                                <span class="skill-tag">B2B Prospecting</span>
+                                <span class="skill-tag">CRM Pipeline Management</span>
+                                <span class="skill-tag">Lead Qualification</span>
                                 <span class="skill-tag">Proposal &amp; Pitch Support</span>
                                 <span class="skill-tag">Account Management</span>
-                                <span class="skill-tag">LinkedIn Prospecting &amp; Email Outreach</span>
-                                <span class="skill-tag">Market &amp; Industry Research</span>
-                                <span class="skill-tag">Digital Marketing &amp; Social Outreach</span>
+                                <span class="skill-tag">LinkedIn Outreach</span>
+                                <span class="skill-tag">Market Research</span>
                             </div>
                         </div>
                     </div>
                 `);
                 break;
+
             case 'cyber':
             case 'cyber-skills':
                 addOutputLine(cmd, `
-                    <div class="skills-grid">
+                    <div class="skills-grid" style="grid-template-columns: 1fr 1fr;">
                         <div class="skill-category">
-                            <h4>🛡️ Cybersecurity &amp; Technical Consulting</h4>
+                            <h4>🛡️ Cybersecurity &amp; VAPT</h4>
                             <div class="skill-tags">
-                                <span class="skill-tag">Vulnerability Assessment (VAPT)</span>
+                                <span class="skill-tag">Vulnerability Assessment</span>
                                 <span class="skill-tag">Penetration Testing</span>
-                                <span class="skill-tag">Ethical Hacking (CEH)</span>
-                                <span class="skill-tag">Network Security</span>
-                                <span class="skill-tag">Web App Security (OWASP Top 10)</span>
-                                <span class="skill-tag">Malware Detection &amp; Analysis</span>
-                            </div>
-                        </div>
-                        <div class="skill-category">
-                            <h4>🧰 Security Tools &amp; Programming</h4>
-                            <div class="skill-tags">
-                                <span class="skill-tag">Metasploit</span>
-                                <span class="skill-tag">Burp Suite</span>
-                                <span class="skill-tag">Nmap</span>
-                                <span class="skill-tag">Kali Linux</span>
-                                <span class="skill-tag">Wireshark</span>
-                                <span class="skill-tag">Python</span>
-                                <span class="skill-tag">C / Java / Bash</span>
-                            </div>
-                        </div>
-                    </div>
-                `);
-                break;
-            case 'skills':
-                addOutputLine('skills', `
-                    <div class="skills-grid">
-                        <div class="skill-category">
-                            <h4>📈 Business &amp; Client Growth</h4>
-                            <div class="skill-tags">
-                                <span class="skill-tag">B2B Sales Support</span>
-                                <span class="skill-tag">CRM</span>
-                                <span class="skill-tag">Lead Qualification</span>
-                                <span class="skill-tag">LinkedIn Prospecting</span>
-                                <span class="skill-tag">Proposal &amp; Pitching</span>
-                                <span class="skill-tag">Account Coordination</span>
-                            </div>
-                        </div>
-                        <div class="skill-category">
-                            <h4>🔒 Cybersecurity &amp; VAPT</h4>
-                            <div class="skill-tags">
-                                <span class="skill-tag">CEH Certified</span>
-                                <span class="skill-tag">VAPT</span>
                                 <span class="skill-tag">OWASP Top 10</span>
-                                <span class="skill-tag">Metasploit</span>
+                                <span class="skill-tag">Network Defense</span>
+                                <span class="skill-tag">Malware Analysis</span>
+                            </div>
+                        </div>
+                        <div class="skill-category">
+                            <h4>🧰 Security Toolkit</h4>
+                            <div class="skill-tags">
                                 <span class="skill-tag">Burp Suite</span>
+                                <span class="skill-tag">Metasploit</span>
                                 <span class="skill-tag">Nmap</span>
                                 <span class="skill-tag">Wireshark</span>
+                                <span class="skill-tag">Kali Linux</span>
+                                <span class="skill-tag">Python</span>
                             </div>
                         </div>
                     </div>
                 `);
                 break;
+
             case 'experience':
                 addOutputLine('experience', `
-                    <div class="experience-list">
-                        <div class="experience-item">
-                            <div class="exp-header">
-                                <span class="exp-title">Cyber Security (VAPT) Intern</span>
-                                <span class="exp-period">Aug 2026 – Present</span>
-                            </div>
-                            <p class="exp-company">CyberTech Shield LLC | Full-time | Vadodara, Gujarat, India (On-site)</p>
-                            <p class="exp-description">• Support cybersecurity-related business and client-facing activities by understanding security requirements and communicating technical concepts clearly.<br>• Research organizations, industries, prospects, and cybersecurity requirements to support business development and outreach.<br>• Develop professional communication and service-oriented messaging for VAPT, network security, and web app security solutions.<br>• Utilize Metasploit, Burp Suite, Nmap, Kali Linux, and Wireshark to enable stronger technical conversations with prospects.</p>
-                        </div>
+                    <div class="profile-info">
+                        <p class="title" style="color:#60a5fa; font-weight:700;">Cyber Security (VAPT) Intern — CyberTech Shield LLC</p>
+                        <p style="font-size:0.85rem; color:#94a3b8; margin-bottom:8px;">Aug 2026 – Present | Vadodara, Gujarat (On-site)</p>
+                        <p class="description">• Direct client-facing support on VAPT deliverables and cybersecurity solutions.<br>• Enterprise market research and target account qualification.<br>• Technical translation of complex vulnerability assessments into executive ROI narratives.</p>
                     </div>
                 `);
                 break;
+
             case 'education':
                 addOutputLine('education', `
-                    <div class="experience-list">
-                        <div class="experience-item">
-                            <div class="exp-header">
-                                <span class="exp-title">B.Tech — Computer Science (Cybersecurity)</span>
-                                <span class="exp-period">2023 – 2027</span>
-                            </div>
-                            <p class="exp-company">Parul University</p>
-                            <p class="exp-description">Specialization in Cybersecurity, Network Defense, Ethical Hacking, and Enterprise Security Solutions.</p>
-                        </div>
-                        <div class="experience-item">
-                            <div class="exp-header">
-                                <span class="exp-title">Higher Secondary (Science Stream)</span>
-                                <span class="exp-period">2020 – 2023</span>
-                            </div>
-                            <p class="exp-company">Sanskartirth Gyanpeeth (70%)</p>
-                            <p class="exp-description">Languages: Gujarati (Native) | Hindi (Fluent) | English (Proficient)</p>
-                        </div>
+                    <div class="profile-info">
+                        <p class="title" style="color:#34d399; font-weight:700;">B.Tech — Computer Science (Cybersecurity Specialization)</p>
+                        <p style="font-size:0.85rem; color:#94a3b8; margin-bottom:6px;">Parul University | 2023 – 2027</p>
+                        <p style="font-size:0.85rem; color:#cbd5e1;">Languages: English (Proficient Business), Hindi (Fluent), Gujarati (Native)</p>
                     </div>
                 `);
                 break;
+
             case 'contact':
                 addOutputLine('contact', `
-                    <div class="contact-info">
-                        <p><strong>Phone:</strong> <a href="tel:+919427974107">+91-9427974107</a></p>
-                        <p><strong>Email:</strong> <a href="mailto:smitmalaviya30@gmail.com">smitmalaviya30@gmail.com</a></p>
-                        <p><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/smit-malaviya-164185228/" target="_blank">linkedin.com/in/smit-malaviya</a></p>
-                        <p><strong>GitHub:</strong> <a href="https://github.com/smit000007" target="_blank">github.com/smit000007</a></p>
+                    <div style="font-size:0.88rem; line-height:1.7;">
+                        <p><strong>Email:</strong> <a href="mailto:smitmalaviya30@gmail.com" style="color:#60a5fa;">smitmalaviya30@gmail.com</a></p>
+                        <p><strong>Phone:</strong> <a href="tel:+919427974107" style="color:#34d399;">+91-9427974107</a></p>
+                        <p><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/smit-malaviya-164185228/" target="_blank" style="color:#60a5fa;">linkedin.com/in/smit-malaviya</a></p>
                         <p><strong>Location:</strong> Surat / Vadodara, Gujarat, India</p>
-                        <p><strong>Availability:</strong> Open to Business Development, Sales &amp; Cybersecurity Roles</p>
                     </div>
                 `);
                 break;
+
             case 'resume':
                 addOutputLine('resume', `
-                    <div class="resume-info">
-                        <p>Opening resume in new tab...</p>
-                        <p><a href="assets/resume/smit-malaviya-resume.pdf" target="_blank" class="resume-link">📄 Preview / Download Smit Malaviya Resume (PDF)</a></p>
+                    <div>
+                        <p style="color:#34d399; margin-bottom:6px;">Opening latest resume preview...</p>
+                        <p><a href="assets/resume/smit-malaviya-resume.pdf" target="_blank" style="color:#60a5fa; font-weight:600;">📄 View / Download Smit Malaviya Resume (PDF)</a></p>
                     </div>
                 `);
                 setTimeout(() => {
                     window.open('assets/resume/smit-malaviya-resume.pdf', '_blank');
-                }, 800);
+                }, 600);
                 break;
+
             case 'clear':
                 terminalOutput.innerHTML = '';
                 break;
+
             case 'help':
                 addOutputLine('help', `
                     <div class="help-menu">
                         <h4>Available Console Commands:</h4>
                         <div class="command-list">
-                            <div class="command-item">
-                                <span class="cmd-name">about</span>
-                                <span class="cmd-desc">- Executive summary &amp; hybrid BD + Cyber value</span>
-                            </div>
-                            <div class="command-item">
-                                <span class="cmd-name">bd</span>
-                                <span class="cmd-desc">- Business Development, Sales &amp; CRM skills</span>
-                            </div>
-                            <div class="command-item">
-                                <span class="cmd-name">cyber</span>
-                                <span class="cmd-desc">- Cybersecurity, VAPT &amp; Ethical Hacking skills</span>
-                            </div>
-                            <div class="command-item">
-                                <span class="cmd-name">experience</span>
-                                <span class="cmd-desc">- Professional work experience at CyberTech Shield LLC</span>
-                            </div>
-                            <div class="command-item">
-                                <span class="cmd-name">education</span>
-                                <span class="cmd-desc">- B.Tech degree &amp; language proficiencies</span>
-                            </div>
-                            <div class="command-item">
-                                <span class="cmd-name">contact</span>
-                                <span class="cmd-desc">- Phone, Email &amp; LinkedIn contact info</span>
-                            </div>
-                            <div class="command-item">
-                                <span class="cmd-name">resume</span>
-                                <span class="cmd-desc">- Preview or download resume PDF</span>
-                            </div>
-                            <div class="command-item">
-                                <span class="cmd-name">clear</span>
-                                <span class="cmd-desc">- Clear terminal output</span>
-                            </div>
+                            <div class="command-item"><span class="cmd-name">about</span><span class="cmd-desc">Executive profile &amp; hybrid strategy</span></div>
+                            <div class="command-item"><span class="cmd-name">bd</span><span class="cmd-desc">Business Development &amp; CRM competencies</span></div>
+                            <div class="command-item"><span class="cmd-name">cyber</span><span class="cmd-desc">Cybersecurity, VAPT &amp; toolstack</span></div>
+                            <div class="command-item"><span class="cmd-name">experience</span><span class="cmd-desc">Industry role at CyberTech Shield LLC</span></div>
+                            <div class="command-item"><span class="cmd-name">education</span><span class="cmd-desc">B.Tech credentials &amp; languages</span></div>
+                            <div class="command-item"><span class="cmd-name">contact</span><span class="cmd-desc">Direct email, phone &amp; LinkedIn</span></div>
+                            <div class="command-item"><span class="cmd-name">resume</span><span class="cmd-desc">Preview or download CV (PDF)</span></div>
+                            <div class="command-item"><span class="cmd-name">clear</span><span class="cmd-desc">Clear terminal screen</span></div>
                         </div>
                     </div>
                 `);
                 break;
+
             default:
-                if (command.trim()) {
-                    addOutputLine(command, `
-                        <div class="error-message" style="opacity:1;">
-                            Command not found: ${command}<br>
-                            Type 'help' or click a Quick Command chip above.
+                if (cmd) {
+                    addOutputLine(cmd, `
+                        <div style="color:#f87171; font-size:0.86rem;">
+                            Command not recognized: <code>${escapeHtml(cmd)}</code>. Type <strong>help</strong> or use the quick chips above.
                         </div>
                     `);
                 }
         }
     }
-    
-    // Event listener for input
-    if (terminalInput) {
-        terminalInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                const command = terminalInput.value;
-                processCommand(command);
-                terminalInput.value = '';
+
+    terminalInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            const command = terminalInput.value;
+            processCommand(command);
+            terminalInput.value = '';
+        }
+    });
+
+    terminalOutput.addEventListener('click', () => {
+        terminalInput.focus();
+    });
+
+    quickCmdButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const cmd = btn.getAttribute('data-cmd');
+            if (cmd) {
+                processCommand(cmd);
             }
         });
-        
-        // Focus on input when terminal is clicked
-        terminalOutput.addEventListener('click', () => {
-            terminalInput.focus();
+    });
+}
+
+/* --------------------------------------------------------------------------
+   10. Form Handling & EmailJS Service
+   -------------------------------------------------------------------------- */
+let lastSubmissionTime = 0;
+const SUBMISSION_COOLDOWN = 20000; // 20s
+
+function initFormHandling() {
+    try {
+        if (typeof emailjs !== 'undefined') {
+            emailjs.init('dQmrhnlupg0TUCIgL');
+        }
+    } catch (err) {
+        console.warn('EmailJS initialization warning:', err);
+    }
+
+    const contactForm = document.getElementById('contact-form');
+    const testBtn = document.getElementById('test-btn');
+    const charCount = document.getElementById('char-count');
+    const messageInput = document.getElementById('message');
+
+    if (!contactForm) return;
+
+    // Character counter
+    if (messageInput && charCount) {
+        messageInput.addEventListener('input', () => {
+            charCount.textContent = messageInput.value.length;
         });
     }
 
-    // Hook up Quick Command buttons
-    if (quickCmdButtons.length) {
-        quickCmdButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const cmd = btn.getAttribute('data-cmd');
-                if (cmd) {
-                    processCommand(cmd);
-                }
+    const fields = ['name', 'email', 'subject', 'message'];
+
+    function validateField(fieldName, val) {
+        const errorEl = document.getElementById(`${fieldName}-error`);
+        let errorMsg = '';
+
+        if (!val || !val.trim()) {
+            errorMsg = `${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)} is required.`;
+        } else if (fieldName === 'email') {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(val.trim())) {
+                errorMsg = 'Please enter a valid email address.';
+            }
+        } else if (fieldName === 'subject' && val.trim().length < 4) {
+            errorMsg = 'Subject must be at least 4 characters.';
+        } else if (fieldName === 'message' && val.trim().length < 10) {
+            errorMsg = 'Message must be at least 10 characters.';
+        }
+
+        if (errorEl) {
+            errorEl.textContent = errorMsg;
+        }
+        return !errorMsg;
+    }
+
+    fields.forEach((field) => {
+        const input = document.getElementById(field);
+        if (input) {
+            input.addEventListener('blur', () => validateField(field, input.value));
+            input.addEventListener('input', () => {
+                const errorEl = document.getElementById(`${field}-error`);
+                if (errorEl) errorEl.textContent = '';
+            });
+        }
+    });
+
+    contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const now = Date.now();
+        if (now - lastSubmissionTime < SUBMISSION_COOLDOWN) {
+            const remaining = Math.ceil((SUBMISSION_COOLDOWN - (now - lastSubmissionTime)) / 1000);
+            showNotification(`Please wait ${remaining}s before sending another message.`, 'warning');
+            return;
+        }
+
+        let allValid = true;
+        fields.forEach((f) => {
+            const input = document.getElementById(f);
+            if (!validateField(f, input ? input.value : '')) {
+                allValid = false;
+            }
+        });
+
+        if (!allValid) {
+            showNotification('Please fill in all required fields accurately.', 'error');
+            return;
+        }
+
+        const submitBtn = document.getElementById('submit-btn');
+        const originalBtnHtml = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Sending...</span>';
+
+        const templateParams = {
+            from_name: document.getElementById('name').value.trim(),
+            from_email: document.getElementById('email').value.trim(),
+            subject: document.getElementById('subject').value.trim(),
+            message: document.getElementById('message').value.trim(),
+            to_name: 'Smit Malaviya',
+            reply_to: document.getElementById('email').value.trim()
+        };
+
+        if (typeof emailjs !== 'undefined') {
+            emailjs.send('service_e38iyv4', 'template_3nyenng', templateParams)
+                .then(() => {
+                    showNotification('Message delivered successfully! I will respond within 24 hours.', 'success');
+                    contactForm.reset();
+                    if (charCount) charCount.textContent = '0';
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnHtml;
+                    lastSubmissionTime = Date.now();
+                })
+                .catch((err) => {
+                    console.error('EmailJS error:', err);
+                    showNotification('Unable to send via contact form right now. Please email directly at smitmalaviya30@gmail.com.', 'error');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnHtml;
+                });
+        } else {
+            showNotification('Email service is currently offline. Please email directly at smitmalaviya30@gmail.com.', 'warning');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnHtml;
+        }
+    });
+
+    if (testBtn) {
+        testBtn.addEventListener('click', () => {
+            if (typeof emailjs === 'undefined') {
+                showNotification('EmailJS library is not available.', 'error');
+                return;
+            }
+            const orig = testBtn.innerHTML;
+            testBtn.disabled = true;
+            testBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Testing...';
+
+            emailjs.send('service_e38iyv4', 'template_3nyenng', {
+                from_name: 'Connection Test',
+                from_email: 'test@example.com',
+                subject: 'Email Service Health Check',
+                message: 'Verifying portfolio contact relay operational status.',
+                to_name: 'Smit Malaviya',
+                reply_to: 'test@example.com'
+            }).then(() => {
+                showNotification('Email service connection verified successfully!', 'success');
+                testBtn.disabled = false;
+                testBtn.innerHTML = orig;
+            }).catch((err) => {
+                console.error('Test error:', err);
+                showNotification('Connection check encountered an error. Check console.', 'error');
+                testBtn.disabled = false;
+                testBtn.innerHTML = orig;
             });
         });
     }
-    
-    // Add dynamic CSS for additional styles
-    const style = document.createElement('style');
-    style.textContent = `
-        .contact-info p {
-            margin: 8px 0;
-            color: #b0b0b0;
-        }
-        
-        .contact-info a {
-            color: #4CAF50;
-            text-decoration: none;
-        }
-        
-        .contact-info a:hover {
-            text-decoration: underline;
-        }
-        
-        .resume-info {
-            color: #b0b0b0;
-        }
-        
-        .resume-link {
-            color: #4CAF50;
-            text-decoration: none;
-            font-weight: 600;
-        }
-        
-        .resume-link:hover {
-            text-decoration: underline;
-        }
-        
-        .error-message {
-            color: #ff5f56;
-            font-style: italic;
-        }
-    `;
-    document.head.appendChild(style);
 }
 
-// Notification System
+/* --------------------------------------------------------------------------
+   11. Notification System
+   -------------------------------------------------------------------------- */
 function showNotification(message, type = 'info') {
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
-    
-    // Add styles
-    let backgroundColor;
-    switch(type) {
-        case 'success':
-            backgroundColor = '#00ff41';
-            break;
-        case 'error':
-            backgroundColor = '#ff5f56';
-            break;
-        case 'warning':
-            backgroundColor = '#ffbd2e';
-            break;
-        default:
-            backgroundColor = '#00d4ff';
-    }
-    
-    notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        padding: 15px 20px;
-        border-radius: 5px;
-        color: white;
-        font-family: 'JetBrains Mono', monospace;
-        font-weight: 600;
-        z-index: 10000;
-        transform: translateX(100%);
-        transition: transform 0.3s ease;
-        background: ${backgroundColor};
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        max-width: 300px;
-        word-wrap: break-word;
-    `;
-    
-    document.body.appendChild(notification);
-    
-    // Animate in
+    const existing = document.querySelector('.notification');
+    if (existing) existing.remove();
+
+    const notif = document.createElement('div');
+    notif.className = `notification notification-${type}`;
+    notif.textContent = message;
+
+    document.body.appendChild(notif);
+
+    requestAnimationFrame(() => {
+        notif.style.transform = 'translateX(0)';
+    });
+
+    const duration = type === 'error' ? 5000 : 3500;
     setTimeout(() => {
-        notification.style.transform = 'translateX(0)';
-    }, 100);
-    
-    // Remove after 5 seconds for errors, 3 seconds for others
-    const duration = type === 'error' ? 5000 : 3000;
-    setTimeout(() => {
-        notification.style.transform = 'translateX(100%)';
-        setTimeout(() => {
-            notification.remove();
-        }, 300);
+        notif.style.transform = 'translateX(130%)';
+        setTimeout(() => notif.remove(), 400);
     }, duration);
 }
 
-// Parallax Effect
-function initParallaxEffect() {
-    window.addEventListener('scroll', () => {
-        const scrolled = window.pageYOffset;
-        const parallaxElements = document.querySelectorAll('.matrix-bg');
-        
-        parallaxElements.forEach(element => {
-            const speed = 0.5;
-            element.style.transform = `translateY(${scrolled * speed}px)`;
-        });
-    });
-}
-
-// Glitch Effect
-function initGlitchEffect() {
-    const glitchElements = document.querySelectorAll('.name, .section-title');
-    
-    glitchElements.forEach(element => {
-        element.addEventListener('mouseenter', () => {
-            element.style.textShadow = `
-                2px 0 #ff0000,
-                -2px 0 #00ffff,
-                0 2px #00ff00
-            `;
-            element.style.animation = 'glitch 0.3s ease-in-out';
-        });
-        
-        element.addEventListener('mouseleave', () => {
-            element.style.textShadow = '';
-            element.style.animation = '';
-        });
-    });
-}
-
-// Add glitch animation to CSS
-const glitchCSS = `
-@keyframes glitch {
-    0% { transform: translate(0); }
-    20% { transform: translate(-2px, 2px); }
-    40% { transform: translate(-2px, -2px); }
-    60% { transform: translate(2px, 2px); }
-    80% { transform: translate(2px, -2px); }
-    100% { transform: translate(0); }
-}
-`;
-
-const style = document.createElement('style');
-style.textContent = glitchCSS;
-document.head.appendChild(style);
-
-// Initialize additional effects
-document.addEventListener('DOMContentLoaded', function() {
-    initParallaxEffect();
-    initGlitchEffect();
-});
-
-// Keyboard Shortcuts
-document.addEventListener('keydown', (e) => {
-    // Ctrl/Cmd + K to focus search (if implemented)
-    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-        e.preventDefault();
-        // Add search functionality here
-    }
-    
-    // Escape to close mobile menu
-    if (e.key === 'Escape') {
-        const hamburger = document.querySelector('.hamburger');
-        const navMenu = document.querySelector('.nav-menu');
-        hamburger.classList.remove('active');
-        navMenu.classList.remove('active');
-    }
-});
-
-// Performance Optimization
-function debounce(func, wait) {
+/* --------------------------------------------------------------------------
+   12. Utilities
+   -------------------------------------------------------------------------- */
+function debounce(fn, wait) {
     let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
+    return function (...args) {
         clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
+        timeout = setTimeout(() => fn.apply(this, args), wait);
     };
 }
 
-// Optimize scroll events
-const optimizedScrollHandler = debounce(() => {
-    // Add any scroll-based animations here
-}, 16); // ~60fps
-
-window.addEventListener('scroll', optimizedScrollHandler);
-
-// Easter Egg - Konami Code
-let konamiCode = [];
-const konamiSequence = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]; // ↑↑↓↓←→←→BA
-
-document.addEventListener('keydown', (e) => {
-    konamiCode.push(e.keyCode);
-    
-    if (konamiCode.length > konamiSequence.length) {
-        konamiCode.shift();
-    }
-    
-    if (konamiCode.join(',') === konamiSequence.join(',')) {
-        // Activate matrix rain effect
-        const matrixRain = document.querySelector('.matrix-rain');
-        if (matrixRain) {
-            matrixRain.style.opacity = '0.3';
-            setTimeout(() => {
-                matrixRain.style.opacity = '0.1';
-            }, 3000);
-        }
-        konamiCode = [];
-    }
-});
-
-// Add loading animation
-window.addEventListener('load', () => {
-    document.body.classList.add('loaded');
-});
-
-// Add CSS for loading state
-const loadingCSS = `
-body:not(.loaded) {
-    overflow: hidden;
+function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
 }
-
-body:not(.loaded)::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--bg-primary);
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-body:not(.loaded)::after {
-    content: 'Loading...';
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: var(--accent-green);
-    font-family: 'Orbitron', monospace;
-    font-size: 1.5rem;
-    z-index: 10000;
-    animation: blink 1s infinite;
-}
-`;
-
-const loadingStyle = document.createElement('style');
-loadingStyle.textContent = loadingCSS;
-document.head.appendChild(loadingStyle);
